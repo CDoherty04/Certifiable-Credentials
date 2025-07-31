@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XRPL Credentials Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>XRPL Credentials Platform</h1>
+            <p>Manage verifiable credentials using XLS-0070 standard</p>
+        </header>
+
+        <nav class="nav">
+            <button class="nav-btn active" data-tab="issuer">Issuer</button>
+            <button class="nav-btn" data-tab="subject">Subject</button>
+            <button class="nav-btn" data-tab="authorizer">Authorizer</button>
+            <button class="nav-btn" data-tab="wallet">Wallet</button>
+        </nav>
+
+        <main class="main">
+            <!-- Issuer Tab -->
+            <div class="tab-content active" id="issuer-tab">
+                <div class="card">
+                    <h2>Issue Credential</h2>
+                    <form id="issue-form">
+                        <div class="form-group">
+                            <label for="issuer-seed">Issuer Seed:</label>
+                            <input type="password" id="issuer-seed" required placeholder="Enter issuer seed">
+                        </div>
+                        <div class="form-group">
+                            <label for="issuer-name">Issuer Name:</label>
+                            <input type="text" id="issuer-name" required placeholder="Enter issuer name">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject-address">Subject Address:</label>
+                            <input type="text" id="subject-address" required placeholder="Enter subject XRPL address">
+                        </div>
+                        <div class="form-group">
+                            <label for="credential-type">Credential Type:</label>
+                            <select id="credential-type" required>
+                                <option value="">Select credential type</option>
+                                <option value="EducationalCredential">Educational Credential</option>
+                                <option value="ProfessionalCredential">Professional Credential</option>
+                                <option value="IdentityCredential">Identity Credential</option>
+                                <option value="MembershipCredential">Membership Credential</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="credential-data">Credential Data (JSON):</label>
+                            <textarea id="credential-data" required placeholder='{"name": "John Doe", "degree": "Bachelor of Science", "institution": "University of Example"}'></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Issue Credential</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Subject Tab -->
+            <div class="tab-content" id="subject-tab">
+                <div class="card">
+                    <h2>View My Credentials</h2>
+                    <form id="subject-form">
+                        <div class="form-group">
+                            <label for="my-address">My XRPL Address:</label>
+                            <input type="text" id="my-address" required placeholder="Enter your XRPL address">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Load Credentials</button>
+                    </form>
+                    <div id="credentials-list" class="credentials-list"></div>
+                </div>
+            </div>
+
+            <!-- Authorizer Tab -->
+            <div class="tab-content" id="authorizer-tab">
+                <div class="card">
+                    <h2>Verify Credential</h2>
+                    <form id="verify-form">
+                        <div class="form-group">
+                            <label for="credential-json">Credential JSON:</label>
+                            <textarea id="credential-json" required placeholder="Paste the credential JSON here"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="expected-issuer">Expected Issuer Address:</label>
+                            <input type="text" id="expected-issuer" required placeholder="Enter expected issuer address">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verify Credential</button>
+                    </form>
+                    <div id="verification-result" class="verification-result"></div>
+                </div>
+            </div>
+
+            <!-- Wallet Tab -->
+            <div class="tab-content" id="wallet-tab">
+                <div class="card">
+                    <h2>Generate Test Wallet</h2>
+                    <p>Generate a new XRPL wallet for testing purposes.</p>
+                    <button id="generate-wallet" class="btn btn-primary">Generate Wallet</button>
+                    <div id="wallet-info" class="wallet-info"></div>
+                </div>
+            </div>
+        </main>
+
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
