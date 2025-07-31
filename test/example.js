@@ -1,5 +1,5 @@
 const xrpl = require('xrpl');
-const CredentialManager = require('../src/credentialManager');
+const CredentialManager = require('../src/credential-manager');
 
 async function runExample() {
     console.log('🚀 XRPL Credentials Platform Example\n');
