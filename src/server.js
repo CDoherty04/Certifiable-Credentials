@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const CredentialManager = require('./credentialManager');
+const CredentialManager = require('./credential-manager');
 
 class CredentialServer {
     constructor() {
