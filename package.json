@@ -1,0 +1,32 @@
+{
+  "name": "xrpl-credentials-platform",
+  "version": "1.0.0",
+  "description": "A simple XRPL credentials platform using XLS-0070 standard",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start-test": "node test/example.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "xrpl": "^2.14.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.1",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "xrpl",
+    "credentials",
+    "xls-0070",
+    "blockchain"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+} 
