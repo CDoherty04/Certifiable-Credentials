@@ -56,6 +56,15 @@ class CredentialPlatform {
                 this.handleVerifyCredential();
             });
         }
+
+        // Import wallet form
+        const importWalletForm = document.getElementById('import-wallet-form');
+        if (importWalletForm) {
+            importWalletForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleImportWallet();
+            });
+        }
     }
 
     setupWalletGeneration() {
@@ -219,7 +228,7 @@ class CredentialPlatform {
             const result = await response.json();
 
             if (result.success) {
-                this.displayWalletInfo(result.data);
+                this.displayWalletInfo(result.data, 'Generated Wallet');
                 this.showNotification('Wallet generated successfully!', 'success');
             } else {
                 this.showNotification(`Failed to generate wallet: ${result.error}`, 'error');
@@ -227,6 +236,47 @@ class CredentialPlatform {
         } catch (error) {
             console.error('Error generating wallet:', error);
             this.showNotification('Error generating wallet: ' + error.message, 'error');
+        }
+    }
+
+    async handleImportWallet() {
+        try {
+            const seed = document.getElementById('import-seed').value;
+            
+            if (!seed) {
+                this.showNotification('Please enter your wallet seed', 'error');
+                return;
+            }
+
+            this.showNotification('Importing wallet...', 'info');
+
+            // Import wallet using XRPL library
+            const xrpl = await import('https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js');
+            
+            try {
+                console.log(seed);
+                const wallet = xrpl.Wallet.fromSeed(seed);
+                console.log(wallet);
+                
+                const walletData = {
+                    address: wallet.address,
+                    seed: seed,
+                    publicKey: wallet.publicKey,
+                    privateKey: wallet.privateKey
+                };
+
+                this.displayWalletInfo(walletData, 'Imported Wallet');
+                this.showNotification('Wallet imported successfully!', 'success');
+                
+                // Clear the form
+                document.getElementById('import-seed').value = '';
+                
+            } catch (error) {
+                this.showNotification('Invalid seed format. Please check your seed and try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Error importing wallet:', error);
+            this.showNotification('Error importing wallet: ' + error.message, 'error');
         }
     }
 
@@ -297,11 +347,12 @@ class CredentialPlatform {
         `;
     }
 
-    displayWalletInfo(walletData) {
+    displayWalletInfo(walletData, title = 'Wallet Information') {
         const walletInfo = document.getElementById('wallet-info');
         
+        walletInfo.style.display = 'block';
         walletInfo.innerHTML = `
-            <h3>Generated Wallet</h3>
+            <h3>${title}</h3>
             <div class="wallet-field">
                 <label>Address:</label>
                 <div class="input-with-copy">

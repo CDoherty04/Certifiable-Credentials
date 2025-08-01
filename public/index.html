@@ -95,10 +95,36 @@
             <!-- Wallet Tab -->
             <div class="tab-content" id="wallet-tab">
                 <div class="card">
-                    <h2>Generate Test Wallet</h2>
-                    <p>Generate a new XRPL wallet for testing purposes.</p>
-                    <button id="generate-wallet" class="btn btn-primary">Generate Wallet</button>
-                    <div id="wallet-info" class="wallet-info"></div>
+                    <h2>Wallet Management</h2>
+                    
+                    <!-- Generate Wallet Section -->
+                    <div class="wallet-section">
+                        <h3>Generate New Wallet</h3>
+                        <p>Generate a new XRPL wallet for testing purposes.</p>
+                        <button id="generate-wallet" class="btn btn-primary">Generate Wallet</button>
+                    </div>
+                    
+                    <!-- Generated Wallet Info Section -->
+                    <div id="wallet-info" class="wallet-info" style="display: none;"></div>
+                    
+                    <!-- Import Wallet Section -->
+                    <div class="wallet-section">
+                        <h3>Import Existing Wallet</h3>
+                        <p>Import an existing wallet using your seed phrase.</p>
+                        <form id="import-wallet-form">
+                            <div class="form-group">
+                                <label for="import-seed">Wallet Seed:</label>
+                                <div class="input-with-copy">
+                                    <input type="password" id="import-seed" required placeholder="Enter your wallet seed">
+                                    <button type="button" class="toggle-btn" onclick="togglePasswordVisibility('import-seed')" title="Show/Hide Seed">
+                                        👁️
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Import Wallet</button>
+                        </form>
+                    </div>
+                    
                 </div>
             </div>
         </main>

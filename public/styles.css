@@ -206,8 +206,29 @@ body {
     color: #742a2a;
 }
 
+.wallet-section {
+    margin-bottom: 40px;
+    padding: 24px;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.wallet-section h3 {
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.wallet-section p {
+    color: #4a5568;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
 .wallet-info {
-    margin-top: 30px;
+    margin-bottom: 40px;
     background: #f7fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
