@@ -10,7 +10,7 @@ class CredentialServer {
         this.app = express();
         this.port = process.env.PORT || 3000;
         this.credentialManager = new CredentialManager(process.env.XRPL_NETWORK || 'wss://s.altnet.rippletest.net:51233');
-        
+
         this.setupMiddleware();
         this.setupRoutes();
     }
@@ -62,7 +62,7 @@ class CredentialServer {
         this.app.get('/api/credentials/:id', async (req, res) => {
             try {
                 const { id } = req.params;
-                
+
                 // For simplicity, we'll return a mock response
                 // In a real implementation, you'd query the XRPL for the specific credential
                 res.json({
@@ -112,7 +112,7 @@ class CredentialServer {
         this.app.get('/api/credentials/subject/:address', async (req, res) => {
             try {
                 const { address } = req.params;
-                
+
                 const credentials = await this.credentialManager.getCredentialsForSubject(address);
 
                 res.json({
@@ -162,16 +162,15 @@ class CredentialServer {
         this.app.post('/api/wallet/generate', async (req, res) => {
             try {
                 const xrpl = require('xrpl');
-                const wallet = xrpl.Wallet.generate();
-                
+                const client = new xrpl.Client('wss://s.altnet.rippletest.net:51233')
+                await client.connect()
+                let faucetHost = null
+                const my_wallet = (await client.fundWallet(null, { faucetHost })).wallet
+                const newAccount = [my_wallet.address, my_wallet.seed]
+                client.disconnect()
                 res.json({
                     success: true,
-                    data: {
-                        address: wallet.address,
-                        seed: wallet.seed,
-                        publicKey: wallet.publicKey,
-                        privateKey: wallet.privateKey
-                    }
+                    data: newAccount
                 });
             } catch (error) {
                 console.error('Error generating wallet:', error);
@@ -191,7 +190,7 @@ class CredentialServer {
     async start() {
         try {
             await this.credentialManager.connect();
-            
+
             this.app.listen(this.port, () => {
                 console.log(`Credential server running on port ${this.port}`);
                 console.log(`Visit http://localhost:${this.port} to access the platform`);
