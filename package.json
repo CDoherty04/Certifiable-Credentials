@@ -4,9 +4,9 @@
   "description": "A simple XRPL credentials platform using XLS-0070 standard",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node frontend/index.js",
     "start-test": "node test/example.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon frontend/index.js",
     "test": "jest"
   },
   "dependencies": {
