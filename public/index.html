@@ -29,19 +29,19 @@
                     <form id="issue-form">
                         <div class="form-group">
                             <label for="issuer-seed">Issuer Seed:</label>
-                            <input type="password" id="issuer-seed" required placeholder="Enter issuer seed">
+                            <input type="password" id="issuer-seed"  placeholder="Enter issuer seed">
                         </div>
                         <div class="form-group">
                             <label for="issuer-name">Issuer Name:</label>
-                            <input type="text" id="issuer-name" required placeholder="Enter issuer name">
+                            <input type="text" id="issuer-name"  placeholder="Enter issuer name">
                         </div>
                         <div class="form-group">
                             <label for="subject-address">Subject Address:</label>
-                            <input type="text" id="subject-address" required placeholder="Enter subject XRPL address">
+                            <input type="text" id="subject-address"  placeholder="Enter subject XRPL address">
                         </div>
                         <div class="form-group">
                             <label for="credential-type">Credential Type:</label>
-                            <select id="credential-type" required>
+                            <select id="credential-type" >
                                 <option value="">Select credential type</option>
                                 <option value="EducationalCredential">Educational Credential</option>
                                 <option value="ProfessionalCredential">Professional Credential</option>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label for="credential-data">Credential Data (JSON):</label>
-                            <textarea id="credential-data" required placeholder='{"name": "John Doe", "degree": "Bachelor of Science", "institution": "University of Example"}'></textarea>
+                            <textarea id="credential-data"  placeholder='{"name": "John Doe", "degree": "Bachelor of Science", "institution": "University of Example"}'></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Issue Credential</button>
                     </form>
@@ -65,7 +65,7 @@
                     <form id="subject-form">
                         <div class="form-group">
                             <label for="my-address">My XRPL Address:</label>
-                            <input type="text" id="my-address" required placeholder="Enter your XRPL address">
+                            <input type="text" id="my-address"  placeholder="Enter your XRPL address">
                         </div>
                         <button type="submit" class="btn btn-primary">Load Credentials</button>
                     </form>
@@ -80,11 +80,11 @@
                     <form id="verify-form">
                         <div class="form-group">
                             <label for="credential-json">Credential JSON:</label>
-                            <textarea id="credential-json" required placeholder="Paste the credential JSON here"></textarea>
+                            <textarea id="credential-json"  placeholder="Paste the credential JSON here"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="expected-issuer">Expected Issuer Address:</label>
-                            <input type="text" id="expected-issuer" required placeholder="Enter expected issuer address">
+                            <input type="text" id="expected-issuer"  placeholder="Enter expected issuer address">
                         </div>
                         <button type="submit" class="btn btn-primary">Verify Credential</button>
                     </form>
@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label for="import-seed">Wallet Seed:</label>
                                 <div class="input-with-copy">
-                                    <input type="password" id="import-seed" required placeholder="Enter your wallet seed">
+                                    <input type="password" id="import-seed"  placeholder="Enter your wallet seed">
                                     <button type="button" class="toggle-btn" onclick="togglePasswordVisibility('import-seed')" title="Show/Hide Seed">
                                         👁️
                                     </button>

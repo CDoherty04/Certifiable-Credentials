@@ -17,11 +17,11 @@ class CredentialPlatform {
         navButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const targetTab = button.getAttribute('data-tab');
-                
+
                 // Update active button
                 navButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                
+
                 // Update active tab
                 tabContents.forEach(tab => tab.classList.remove('active'));
                 document.getElementById(`${targetTab}-tab`).classList.add('active');
@@ -100,7 +100,7 @@ class CredentialPlatform {
             // Get issuer address from seed
             const xrpl = await import('https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js');
             const wallet = xrpl.Wallet.fromSeed(issuerSeed);
-            
+
             const issuer = {
                 address: wallet.address,
                 seed: issuerSeed,
@@ -127,7 +127,7 @@ class CredentialPlatform {
             if (result.success) {
                 this.showNotification('Credential issued successfully!', 'success');
                 console.log('Issued credential:', result.data);
-                
+
                 // Display the issued credential
                 this.displayIssuedCredential(result.data);
             } else {
@@ -142,7 +142,7 @@ class CredentialPlatform {
     async handleLoadCredentials() {
         try {
             const address = document.getElementById('my-address').value;
-            
+
             if (!address) {
                 this.showNotification('Please enter your XRPL address', 'error');
                 return;
@@ -218,7 +218,7 @@ class CredentialPlatform {
         try {
             this.showNotification('Generating wallet...', 'info');
 
-            const response = await fetch(`${this.apiBase}/wallet/generate`, {
+            const response = await fetch(`${this.apiBase}/generate-wallet`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ class CredentialPlatform {
     async handleImportWallet() {
         try {
             const seed = document.getElementById('import-seed').value;
-            
+
             if (!seed) {
                 this.showNotification('Please enter your wallet seed', 'error');
                 return;
@@ -250,39 +250,56 @@ class CredentialPlatform {
 
             this.showNotification('Importing wallet...', 'info');
 
-            // Import wallet using XRPL library
-            const xrpl = await import('https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js');
-            
-            try {
-                console.log(seed);
-                const wallet = xrpl.Wallet.fromSeed(seed);
-                console.log(wallet);
-                
-                const walletData = {
-                    address: wallet.address,
-                    seed: seed,
-                    publicKey: wallet.publicKey,
-                    privateKey: wallet.privateKey
-                };
+            const response = await fetch(`${this.apiBase}/import-wallet/${seed}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-                this.displayWalletInfo(walletData, 'Imported Wallet');
+            const result = await response.json();
+
+            if (result.success) {
+                this.displayWalletInfo(result.data, 'Imported Wallet');
                 this.showNotification('Wallet imported successfully!', 'success');
-                
-                // Clear the form
-                document.getElementById('import-seed').value = '';
-                
-            } catch (error) {
-                this.showNotification('Invalid seed format. Please check your seed and try again.', 'error');
+            } else {
+                this.showNotification('Failed to import wallet', 'error');
             }
         } catch (error) {
             console.error('Error importing wallet:', error);
             this.showNotification('Error importing wallet: ' + error.message, 'error');
         }
+
+
+        // // Import wallet using XRPL library
+        // const xrpl = await import('https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js');
+
+        // try {
+        //     console.log(seed);
+        //     const wallet = xrpl.Wallet.fromSeed(seed);
+        //     console.log(wallet);
+
+        //     const walletData = {
+        //         address: wallet.address,
+        //         seed: seed,
+        //         publicKey: wallet.publicKey,
+        //         privateKey: wallet.privateKey
+        //     };
+
+        //     this.displayWalletInfo(walletData, 'Imported Wallet');
+        //     this.showNotification('Wallet imported successfully!', 'success');
+
+        //     // Clear the form
+        //     document.getElementById('import-seed').value = '';
+
+        // } catch (error) {
+        //     this.showNotification('Invalid seed format. Please check your seed and try again.', 'error');
+        // }
     }
 
     displayIssuedCredential(credentialData) {
         const tabContent = document.getElementById('issuer-tab');
-        
+
         // Create a display area for the issued credential
         let displayArea = tabContent.querySelector('.issued-credential');
         if (!displayArea) {
@@ -310,7 +327,7 @@ class CredentialPlatform {
 
     displayCredentials(credentials, address) {
         const credentialsList = document.getElementById('credentials-list');
-        
+
         if (credentials.length === 0) {
             credentialsList.innerHTML = `
                 <div class="credential-item">
@@ -336,7 +353,7 @@ class CredentialPlatform {
 
     displayVerificationResult(result) {
         const verificationResult = document.getElementById('verification-result');
-        
+
         verificationResult.className = `verification-result ${result.valid ? 'valid' : 'invalid'}`;
         verificationResult.innerHTML = `
             <h3>Verification Result</h3>
@@ -349,15 +366,15 @@ class CredentialPlatform {
 
     displayWalletInfo(walletData, title = 'Wallet Information') {
         const walletInfo = document.getElementById('wallet-info');
-        
+
         walletInfo.style.display = 'block';
         walletInfo.innerHTML = `
             <h3>${title}</h3>
             <div class="wallet-field">
                 <label>Address:</label>
                 <div class="input-with-copy">
-                    <input type="text" value="${walletData.address}" readonly>
-                    <button class="copy-btn" onclick="copyToClipboard('${walletData.address}')" title="Copy Address">
+                    <input type="text" value="${walletData[0]}" readonly>
+                    <button class="copy-btn" onclick="copyToClipboard('${walletData[0]}')" title="Copy Address">
                         📋
                     </button>
                 </div>
@@ -365,8 +382,8 @@ class CredentialPlatform {
             <div class="wallet-field">
                 <label>Seed (Private Key):</label>
                 <div class="input-with-copy">
-                    <input type="password" id="seed-input" value="${walletData.seed}" readonly>
-                    <button class="copy-btn" onclick="copyToClipboard('${walletData.seed}')" title="Copy Seed">
+                    <input type="password" id="seed-input" value="${walletData[1]}" readonly>
+                    <button class="copy-btn" onclick="copyToClipboard('${walletData[1]}')" title="Copy Seed">
                         📋
                     </button>
                     <button class="toggle-btn" onclick="togglePasswordVisibility('seed-input')" title="Show/Hide Seed">
@@ -374,29 +391,8 @@ class CredentialPlatform {
                     </button>
                 </div>
             </div>
-            <div class="wallet-field">
-                <label>Public Key:</label>
-                <div class="input-with-copy">
-                    <input type="text" value="${walletData.publicKey}" readonly>
-                    <button class="copy-btn" onclick="copyToClipboard('${walletData.publicKey}')" title="Copy Public Key">
-                        📋
-                    </button>
-                </div>
-            </div>
-            <div class="wallet-field">
-                <label>Private Key:</label>
-                <div class="input-with-copy">
-                    <input type="password" id="private-key-input" value="${walletData.privateKey}" readonly>
-                    <button class="copy-btn" onclick="copyToClipboard('${walletData.privateKey}')" title="Copy Private Key">
-                        📋
-                    </button>
-                    <button class="toggle-btn" onclick="togglePasswordVisibility('private-key-input')" title="Show/Hide Private Key">
-                        👁️
-                    </button>
-                </div>
-            </div>
             <p style="margin-top: 16px; color: #e53e3e; font-size: 0.9rem;">
-                ⚠️ Keep your seed and private key secure! Never share them with anyone.
+                ⚠️ Keep your seed phrase secure! Never share them with anyone.
             </p>
         `;
     }
@@ -405,7 +401,7 @@ class CredentialPlatform {
         const notification = document.getElementById('notification');
         notification.textContent = message;
         notification.className = `notification ${type} show`;
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
         }, 5000);
@@ -419,7 +415,7 @@ function copyToClipboard(text) {
         const notification = document.getElementById('notification');
         notification.textContent = 'Copied to clipboard!';
         notification.className = 'notification success show';
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
         }, 2000);
@@ -432,11 +428,11 @@ function copyToClipboard(text) {
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        
+
         const notification = document.getElementById('notification');
         notification.textContent = 'Copied to clipboard!';
         notification.className = 'notification success show';
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
         }, 2000);
