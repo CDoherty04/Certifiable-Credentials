@@ -1,4 +1,5 @@
 const path = require('path');
+const xrpl = require('xrpl');
 
 const getHomePage = (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
@@ -8,9 +9,16 @@ const getHealth = (req, res) => {
     res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 }
 
+const getCredentialById = async (req, res) => {
+    res.json({note: "Need to implement this", id: req.params.id});
+}
+
+const getCredentialsForSubject = async (req, res) => {
+    res.json({note: "Need to implement this", address: req.params.address});
+}
+
 const generateWallet = async (req, res) => {
     try {
-        const xrpl = require('xrpl');
         const client = new xrpl.Client('wss://s.altnet.rippletest.net:51233')
         await client.connect()
         let faucetHost = null
@@ -30,12 +38,26 @@ const generateWallet = async (req, res) => {
     }
 }
 
-const getCredentialById = async (req, res) => {
-    res.json({note: "Need to implement this", id: req.params.id});
-}
-
-const getCredentialsForSubject = async (req, res) => {
-    res.json({note: "Need to implement this", address: req.params.address});
+const importWallet = async (req, res) => {
+    try {
+        const net = 'wss://s.altnet.rippletest.net:51233'
+        const client = new xrpl.Client(net)
+        await client.connect()
+        const seed = req.params.seed
+        const wallet = xrpl.Wallet.fromSeed(seed)
+        const address = wallet.address
+        client.disconnect()
+        res.json({
+            success: true, 
+            data: [address, seed]
+        });
+    } catch (error) {
+        console.error('Error importing wallet:', error);
+        res.status(500).json({
+            error: 'Failed to import wallet',
+            details: error.message
+        });
+    }
 }
 
 const issueCredential = async (req, res) => {
@@ -53,9 +75,10 @@ const revokeCredential = async (req, res) => {
 module.exports = {
     getHomePage,
     getHealth,
-    generateWallet,
     getCredentialById,
     getCredentialsForSubject,
+    generateWallet,
+    importWallet,
     issueCredential,
     verifyCredential,
     revokeCredential

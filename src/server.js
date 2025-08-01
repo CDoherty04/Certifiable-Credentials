@@ -49,6 +49,11 @@ class CredentialServer {
             await routes.generateWallet(req, res);
         });
 
+        // Import wallet
+        this.app.post('/api/import-wallet/:seed', async (req, res) => {
+            await routes.importWallet(req, res);
+        });
+
         // Issue a new credential
         this.app.post('/api/credentials/issue', async (req, res) => {
             await routes.issueCredential(req, res);
