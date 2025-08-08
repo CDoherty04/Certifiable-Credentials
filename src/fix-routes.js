@@ -5,61 +5,7 @@ require("dotenv").config()
 
 const net = 'wss://s.devnet.rippletest.net:51233'
 
-const getHomePage = (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/mint-nfts.html'));
-}
-
-const getCredentialById = async (req, res) => {
-    res.json({ note: "Need to implement this", id: req.params.id });
-}
-
-const getCredentialsForSubject = async (req, res) => {
-    res.json({ note: "Need to implement this", address: req.params.address });
-}
-
-const generateWallet = async (req, res) => {
-    try {
-        const client = new xrpl.Client(net)
-        await client.connect()
-        let faucetHost = null
-        const my_wallet = (await client.fundWallet(null, { faucetHost })).wallet
-        const newAccount = [my_wallet.address, my_wallet.seed]
-        client.disconnect()
-        res.json({
-            success: true,
-            data: newAccount
-        });
-    } catch (error) {
-        console.error('Error generating wallet:', error);
-        res.status(500).json({
-            error: 'Failed to generate wallet',
-            details: error.message
-        });
-    }
-}
-
-const importWallet = async (req, res) => {
-    try {
-        const client = new xrpl.Client(net)
-        await client.connect()
-        const seed = req.params.seed
-        const wallet = xrpl.Wallet.fromSeed(seed)
-        const address = wallet.address
-        client.disconnect()
-        res.json({
-            success: true,
-            data: [address, seed]
-        });
-    } catch (error) {
-        console.error('Error importing wallet:', error);
-        res.status(500).json({
-            error: 'Failed to import wallet',
-            details: error.message
-        });
-    }
-}
-
-const issueCredential = async (req, res) => {
+async function issueCredential(req, res) {
     try {
         const client = new xrpl.Client(net)
         await client.connect()
@@ -97,15 +43,6 @@ const issueCredential = async (req, res) => {
         if (credentialData) credential.data = credentialData;
         if (expiration) credential.expiration = expiration;
 
-        // Store credential on Pinata
-        const pinata = new PinataSDK({
-            pinataJwt: process.env.PINATA_JWT,
-            pinataGateway: process.env.GATEWAY_URL
-        })
-        const upload = await pinata.upload.private.file(credential)
-        console.log(upload)
-        const credentialUri = upload.IpfsHash
-
         // Convert credential to hex for NFToken
         const credentialHex = xrpl.convertStringToHex(JSON.stringify(credential));
 
@@ -113,7 +50,7 @@ const issueCredential = async (req, res) => {
         const transactionParams = {
             TransactionType: "NFTokenMint",
             Account: issuerWallet.address,
-            URI: credentialUri,
+            URI: credentialHex,
             Flags: 8, // Burnable NFToken (Add 0x0008 for transferable) (Add 0x0010 for DNFT)
             TransferFee: 0, // No transfer fee
             NFTokenTaxon: 0, // Required, but can be 0
@@ -128,7 +65,7 @@ const issueCredential = async (req, res) => {
 
         res.json({
             success: true,
-            credentialUri: credentialUri,
+            credentialUri: credentialHex,
             issuer: issuerWallet.address,
             subject: subjectAddress,
             transactionHash: tx.result.hash,
@@ -144,21 +81,22 @@ const issueCredential = async (req, res) => {
     }
 }
 
-const verifyCredential = async (req, res) => {
-    res.json({ note: "Need to implement this" });
+async function receiveCredential(req, res) {
+    
 }
 
-const revokeCredential = async (req, res) => {
-    res.json({ note: "Need to implement this" });
+async function requestCredential(req, res) {
+    
+}
+
+// Home page handler
+function getHomePage(req, res) {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 }
 
 module.exports = {
-    getHomePage,
-    getCredentialById,
-    getCredentialsForSubject,
-    generateWallet,
-    importWallet,
     issueCredential,
-    verifyCredential,
-    revokeCredential
-}
+    receiveCredential,
+    requestCredential,
+    getHomePage
+};
