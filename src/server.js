@@ -4,13 +4,10 @@ const path = require('path');
 const routes = require('./routes');
 require('dotenv').config();
 
-const CredentialManager = require('./credential-manager');
-
 class CredentialServer {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 3000;
-        this.credentialManager = new CredentialManager(process.env.XRPL_NETWORK || 'wss://s.altnet.rippletest.net:51233');
 
         this.setupMiddleware();
         this.setupRoutes();
@@ -27,11 +24,6 @@ class CredentialServer {
         // Serve the main page
         this.app.get('/', (req, res) => {
             routes.getHomePage(req, res);
-        });
-
-        // Health check
-        this.app.get('/api/health', (req, res) => {
-            routes.getHealth(req, res);
         });
 
         // Get credential by ID
@@ -72,8 +64,6 @@ class CredentialServer {
 
     async start() {
         try {
-            await this.credentialManager.connect();
-
             this.app.listen(this.port, () => {
                 console.log(`Credential server running on port ${this.port}`);
                 console.log(`Visit http://localhost:${this.port} to access the platform`);
@@ -85,7 +75,6 @@ class CredentialServer {
     }
 
     async stop() {
-        await this.credentialManager.disconnect();
         process.exit(0);
     }
 }
