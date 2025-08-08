@@ -82,11 +82,11 @@ async function issueCredential(req, res) {
 }
 
 async function receiveCredential(req, res) {
-    
+    // TODO: Implement
 }
 
 async function requestCredential(req, res) {
-    
+    // TODO: Implement
 }
 
 // Home page handler
