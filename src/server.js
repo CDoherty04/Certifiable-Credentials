@@ -37,8 +37,8 @@ class CredentialServer {
         });
 
         // Authorizer routes
-        this.app.post('/requestCredential', async (req, res) => {
-            await routes.requestCredential(req, res);
+        this.app.post('/verifyCredential', async (req, res) => {
+            await routes.verifyCredential(req, res);
         });
     }
 
