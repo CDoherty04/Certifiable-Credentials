@@ -1,3 +1,4 @@
+// TODO: MOVE TO SERVER (xrpl.js only runs on Node.js/Server-side)
 const xrpl = require('xrpl');
 const net = 'wss://s.devnet.rippletest.net:51233';
 

@@ -1,4 +1,4 @@
-const CredentialServer = require('./src/server');
+const CredentialServer = require('./src/server/server');
 
 async function main() {
     const server = new CredentialServer();
