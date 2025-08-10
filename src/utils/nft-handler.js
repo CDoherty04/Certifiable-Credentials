@@ -14,8 +14,7 @@ async function mintNFT(issuerSeed, credentialDataURI) {
       Account: wallet.address,
       NFTokenTaxon: 0,
       Flags: 1,
-      // TODO: Store on IPFS and use the hash as the URI
-      URI: xrpl.convertStringToHex(credentialDataURI) // Currently hardcoded
+      URI: xrpl.convertStringToHex(credentialDataURI)
     };
 
     console.log('Minting NFT...');

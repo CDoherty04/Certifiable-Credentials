@@ -1,13 +1,23 @@
 const path = require('path');
+const { StoreCredentialData } = require('../utils/pinata');
+const { mintNFT, createSellOffer } = require('../utils/nft-handler');
 
 async function issueCredential(req, res) {
     const { issuerSeed, subjectAddress, subjectEmail, credentialData } = req.body;
+
+    // Upload Credential Data to Pinata/IPFS
+    const CID = await StoreCredentialData(credentialData);
+    const URI = `https://ipfs.io/ipfs/${CID}`;
+
+    // Create Credential Object
+    const nftId = await mintNFT(issuerSeed, URI);
+    const sellOfferId = await createSellOffer(issuerSeed, nftId, subjectAddress);
+
     res.json({
-        message: "Credential issued successfully!",
-        issuerSeed: issuerSeed,
-        subjectAddress: subjectAddress,
-        subjectEmail: subjectEmail,
-        credentialData: credentialData
+        message: "Credential issued successfully! The credential data can be found on IPFS at the following URI. Send the NFT ID and Sell Offer ID to the subject to receive the credential.",
+        URI: URI,
+        nftId: nftId,
+        sellOfferId: sellOfferId
     });
 }
 
