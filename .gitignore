@@ -108,3 +108,5 @@ Thumbs.db
 # XRPL specific
 .wallets/
 .credentials/ 
+
+testing/
