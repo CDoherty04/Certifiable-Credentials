@@ -1,4 +1,16 @@
 const crypto = require('crypto');
+const { Wallet } = require('xrpl');
+
+async function sign(dataHash, walletSeed) {
+    const wallet = Wallet.fromSeed("sEd7hTXg52SdYRLK9Vw5erpi245AU9W");
+    const signature = wallet.sign(dataHash);
+    return signature;
+}
+
+async function hash(data) {
+    const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data));
+    return hash;
+}
 
 async function encrypt(data) {
     const key = await crypto.subtle.generateKey(
@@ -44,5 +56,7 @@ async function decrypt(ciphertext, iv, key) {
 
 module.exports = {
     encrypt,
-    decrypt
+    decrypt,
+    hash,
+    sign
 }
