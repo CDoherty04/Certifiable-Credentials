@@ -15,6 +15,7 @@ async function issueCredential(req, res) {
     const sellOfferId = await createSellOffer(issuerSeed, nftId, subjectAddress);
 
     res.json({
+        success: true,
         message: 'Credential issued successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
             'subject for acceptance.',
@@ -33,6 +34,7 @@ async function receiveCredential(req, res) {
     const URI = xrpl.convertHexToString(nft.URI);
 
     res.json({
+        success: true,
         message: 'Credential received successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId).',
         nft: nft,
