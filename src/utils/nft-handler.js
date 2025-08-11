@@ -1,6 +1,7 @@
 // TODO: MOVE TO SERVER (xrpl.js only runs on Node.js/Server-side)
 const xrpl = require('xrpl');
 const net = 'wss://s.devnet.rippletest.net:51233';
+const clioNet = 'wss://clio.devnet.rippletest.net:51233/';
 
 async function mintNFT(issuerSeed, credentialDataURI) {
   const wallet = xrpl.Wallet.fromSeed(issuerSeed);
@@ -154,9 +155,32 @@ async function getNFTs(subjectAddress) {
   }
 }
 
+async function getNFTbyId(nftId) {
+  const client = new xrpl.Client(clioNet);
+
+  try {
+    await client.connect();
+
+    const nft = await client.request({
+      method: "nft_info",
+      nft_id: nftId,
+    });
+
+    console.log(nft);
+    return nft.result;
+  } catch (error) {
+    console.error("Error getting NFT info:", error);
+  } finally {
+    if (client.isConnected()) {
+      await client.disconnect();
+    }
+  }
+}
+
 module.exports = {
   mintNFT,
   createSellOffer,
   acceptSellOffer,
-  getNFTs
+  getNFTs,
+  getNFTbyId
 };

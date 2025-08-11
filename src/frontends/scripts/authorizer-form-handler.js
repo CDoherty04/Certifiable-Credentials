@@ -3,7 +3,7 @@ const trustedAccounts = []
 function addTrustedIssuer() {
 
     // Get elements
-    const { issuerAddress, trustedIssuersList, trustedIssuersStatus } = getElements();
+    const { issuerAddress, authorizedIssuersElement, trustedIssuersStatus } = getElements();
 
     // Validate issuer address Input
     if (!validateIssuerAddress()) {
@@ -18,7 +18,7 @@ function addTrustedIssuer() {
         trustedAccounts.push(issuerAddress);
         const newIssuerItem = document.createElement('div');
         newIssuerItem.textContent = issuerAddress;
-        trustedIssuersList.appendChild(newIssuerItem);
+        authorizedIssuersElement.appendChild(newIssuerItem);
 
         // Update status display with pulse animation
         trustedIssuersStatus.style.display = 'block';
@@ -32,43 +32,89 @@ function addTrustedIssuer() {
     }
 }
 
-function verifyCredential() {
+async function verifyCredential() {
     // Get elements
-    const { nftId, trustedIssuersList, verifyCredentialStatus } = getElements();
+    const { nftId, authorizedIssuers, verifyCredentialStatus, verifyCredentialButton } = getElements();
 
     // Validate nftId Input
-    // if (!validateNftId()) {
-    //     verifyCredentialStatus.style.display = 'block';
-    //     verifyCredentialStatus.className = 'status error pulse';
-    //     verifyCredentialStatus.textContent = 'NFT ID is not valid';
-    //     return;
-    // }
+    if (!validateNftId()) {
+        verifyCredentialStatus.style.display = 'block';
+        verifyCredentialStatus.className = 'status error pulse';
+        verifyCredentialStatus.textContent = 'NFT ID is not valid or trusted issuers list is empty';
+        return;
+    }
 
-    // Get the issuer address from the nftId
-    const issuerAddress = "rsoJ2QRSbadhrRkfngiYnHXb9EMpKHJfP9"; // TODO: Get the issuer address from the nftId
-    const isTrusted = trustedAccounts.includes(issuerAddress);
+    // Show loading state
+    verifyCredentialStatus.style.display = 'block';
+    verifyCredentialStatus.className = 'status loading';
+    verifyCredentialStatus.textContent = 'Verifying credential...';
+    verifyCredentialButton.disabled = true;
+
+    // Get the issuer address from the nftId with verifyCredential API call
+    let isTrusted = false;
+    let errorEncountered = false;
+
+    try {
+        const response = await verifyCredentialAPI({ nftId, authorizedIssuers });
+        console.log('response', response);
+        if (response.ok) {
+            const result = await response.json();
+            isTrusted = result.isTrusted;
+            verifyCredentialStatus.className = 'status success';
+            verifyCredentialStatus.textContent = "Response: " + JSON.stringify(result, null, 2);
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        verifyCredentialStatus.className = 'status error';
+        verifyCredentialStatus.textContent = `Error: ${error.message}`;
+        console.error('Error:', error);
+        errorEncountered = true;
+    } finally {
+        verifyCredentialButton.disabled = false;
+    }
 
     // Update status display
     if (isTrusted) {
         verifyCredentialStatus.style.display = 'block';
         verifyCredentialStatus.className = 'status success pulse';
-        verifyCredentialStatus.textContent = 'Credential is trusted';
+        verifyCredentialStatus.textContent = 'Credential is trusted!';
 
-    } else {
+    } else if (!errorEncountered) {
         verifyCredentialStatus.style.display = 'block';
         verifyCredentialStatus.className = 'status error pulse';
         verifyCredentialStatus.textContent = 'Credential is not trusted';
     }
 }
 
+async function verifyCredentialAPI(formData) {
+    // Make API request
+    const response = await fetch('/api/verifyCredential', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    });
+
+    return response;
+}
+
 function getElements() {
     const issuerAddress = document.getElementById('issuerAddress').value;
-    const trustedIssuersList = document.getElementById('trustedIssuersList');
+    const authorizedIssuersElement = document.getElementById('trustedIssuersList');
     const nftId = document.getElementById('nftId').value;
     const trustedIssuersStatus = document.getElementById('trustedIssuersStatus');
     const verifyCredentialStatus = document.getElementById('verifyCredentialStatus');
+    const verifyCredentialButton = document.getElementById('verifyCredentialButton');
+    
+    // Get primitive list
+    const authorizedIssuers = [];
+    for (let i = 0; i < authorizedIssuersElement.children.length; i++) {
+        authorizedIssuers.push(authorizedIssuersElement.children[i].childNodes[0].data);
+    }
 
-    return { issuerAddress, trustedIssuersList, nftId, trustedIssuersStatus, verifyCredentialStatus };
+    return { issuerAddress, authorizedIssuersElement, authorizedIssuers, nftId, trustedIssuersStatus, verifyCredentialStatus, verifyCredentialButton };
 }
 
 function validateIssuerAddress() {
@@ -76,8 +122,8 @@ function validateIssuerAddress() {
     return /^r[a-zA-Z0-9]{33}$/.test(issuerAddress);
 }
 
+// NFT ID must be valid and trusted issuers list must not be empty
 function validateNftId() {
-    const { nftId } = getElements();
-    // TODO: Validate nftId
-    return /^[a-zA-Z0-9]{35}$/.test(nftId);
+    const { nftId, authorizedIssuers } = getElements();
+    return /^[0-9A-Fa-f]{64}$/.test(nftId) && authorizedIssuers.length > 0;
 }

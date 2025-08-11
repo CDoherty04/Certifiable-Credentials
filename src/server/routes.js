@@ -1,6 +1,6 @@
 const path = require('path');
 const { StoreCredentialData } = require('../utils/pinata');
-const { mintNFT, createSellOffer, acceptSellOffer } = require('../utils/nft-handler');
+const { mintNFT, createSellOffer, acceptSellOffer, getNFTbyId } = require('../utils/nft-handler');
 const xrpl = require('xrpl');
 
 async function issueCredential(req, res) {
@@ -19,7 +19,7 @@ async function issueCredential(req, res) {
         message: 'Credential issued successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
             'subject for acceptance.',
-        URI: URI,
+        uri: URI,
         nftId: nftId,
         sellOfferId: sellOfferId
     });
@@ -28,22 +28,44 @@ async function issueCredential(req, res) {
 async function receiveCredential(req, res) {
     const { subjectSeed, sellOfferId } = req.body;
 
-    console.log(subjectSeed, sellOfferId);
-
     const nft = await acceptSellOffer(subjectSeed, sellOfferId);
-    const URI = xrpl.convertHexToString(nft.URI);
 
     res.json({
         success: true,
         message: 'Credential received successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId).',
         nft: nft,
-        URI: URI
+        uri: xrpl.convertHexToString(nft.uri)
     });
 }
 
 async function verifyCredential(req, res) {
-    // TODO: Implement
+    const { nftId, authorizedIssuers } = req.body;
+
+    // Get the issuer address from the nftId
+    const nft = await getNFTbyId(nftId);
+    console.log('authorizedIssuers', authorizedIssuers);
+    console.log('nft.issuer', nft.issuer);
+
+    const isTrusted = authorizedIssuers.includes(nft.issuer);
+
+    if (isTrusted) {
+        res.json({
+            success: true,
+            message: 'The Credential was fetched successfully and issued by an authorized source!',
+            nft: nft,
+            URI: xrpl.convertHexToString(nft.uri),
+            isTrusted: isTrusted
+        });
+    } else {
+        res.json({
+            success: false,
+            message: 'The Credential was fetched successfully but was issued by an UNAUTHORIZED source.',
+            nft: nft,
+            URI: xrpl.convertHexToString(nft.uri),
+            isTrusted: isTrusted
+        });
+    }
 }
 
 async function getGeneralFrontend(req, res) {
