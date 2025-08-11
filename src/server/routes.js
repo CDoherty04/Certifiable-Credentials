@@ -68,16 +68,44 @@ async function verifyCredential(req, res) {
 }
 
 async function getGeneralFrontend(req, res) {
-    res.sendFile(path.join(__dirname, '../frontends/General/index.html'));
+    try {
+        const filePath = path.join(__dirname, '../frontends/General/index.html');
+        console.log('Serving General frontend from:', filePath);
+        res.sendFile(filePath);
+    } catch (error) {
+        console.error('Error serving General frontend:', error);
+        res.status(500).send('Error loading page');
+    }
 }
 async function getIssuerFrontend(req, res) {
-    res.sendFile(path.join(__dirname, '../frontends/Issuer/index.html'));
+    try {
+        const filePath = path.join(__dirname, '../frontends/Issuer/index.html');
+        console.log('Serving Issuer frontend from:', filePath);
+        res.sendFile(filePath);
+    } catch (error) {
+        console.error('Error serving Issuer frontend:', error);
+        res.status(500).send('Error loading page');
+    }
 }
 async function getSubjectFrontend(req, res) {
-    res.sendFile(path.join(__dirname, '../frontends/Subject/index.html'));
+    try {
+        const filePath = path.join(__dirname, '../frontends/Subject/index.html');
+        console.log('Serving Subject frontend from:', filePath);
+        res.sendFile(filePath);
+    } catch (error) {
+        console.error('Error serving Subject frontend:', error);
+        res.status(500).send('Error loading page');
+    }
 }
 async function getAuthorizerFrontend(req, res) {
-    res.sendFile(path.join(__dirname, '../frontends/Authorizer/index.html'));
+    try {
+        const filePath = path.join(__dirname, '../frontends/Authorizer/index.html');
+        console.log('Serving Authorizer frontend from:', filePath);
+        res.sendFile(filePath);
+    } catch (error) {
+        console.error('Error serving Authorizer frontend:', error);
+        res.status(500).send('Error loading page');
+    }
 }
 
 module.exports = {

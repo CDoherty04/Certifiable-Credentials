@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "vercel.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/vercel.js"
+    },
+    {
+      "src": "/school",
+      "dest": "/vercel.js"
+    },
+    {
+      "src": "/student", 
+      "dest": "/vercel.js"
+    },
+    {
+      "src": "/company",
+      "dest": "/vercel.js"
+    },
+    {
+      "src": "/",
+      "dest": "/vercel.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/vercel.js"
+    }
+  ]
+} 
