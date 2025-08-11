@@ -12,11 +12,47 @@
 <body>
     <div class="container">
         <h1>Credential Authorizer</h1>
-        <h2>To be implemented</h2>
-        <button onclick="window.location.href = '/'"> ← Not an Authorizer?</button>
-        <div id="status" class="status" style="display: none;"></div>
-    </div>
+        
+        <!-- Trusted Issuers Management Section -->
+        <div class="section">
+            <h3>Trusted Issuers Management</h3>
+            
+            <!-- Add New Issuer -->
+            <div class="add-issuer-section">
+                <div class="form-group">
+                    <label for="issuerAddress">Add New Trusted Issuer:</label>
+                    <div class="input-with-button">
+                        <input type="text" id="issuerAddress" placeholder="Enter issuer wallet address" required>
+                        <button type="button" onclick="addTrustedIssuer()" class="add-button">Add</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trusted Issuers List -->
+            <div class="issuers-list-section">
+                <h4>Current Trusted Issuers:</h4>
+                <div id="trustedIssuersList" class="trusted-issuers-list">
+                    <!-- Trusted issuers will be populated here -->
+                </div>
+            </div>
+        </div>
 
+        <!-- Verify Credential Section -->
+        <div class="section">
+            <h3>Verify Credential</h3>
+            <div class="form-group">
+                <label for="nftId">NFT ID:</label>
+                <input type="text" id="nftId" placeholder="Enter NFT ID to verify" required>
+            </div>
+            <button type="button" onclick="verifyCredential()" class="action-button">Verify Credential</button>
+        </div>
+
+        <!-- Status Display -->
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <!-- Navigation -->
+        <button onclick="window.location.href = '/'" class="nav-button">← Not an Authorizer?</button>
+    </div>
 </body>
 
 </html>
