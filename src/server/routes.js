@@ -1,6 +1,6 @@
 const path = require('path');
 const { StoreCredentialData } = require('../utils/pinata');
-const { mintNFT, createSellOffer } = require('../utils/nft-handler');
+const { mintNFT, createSellOffer, acceptSellOffer } = require('../utils/nft-handler');
 
 async function issueCredential(req, res) {
     const { issuerSeed, subjectAddress, subjectEmail, credentialData } = req.body;
@@ -14,7 +14,9 @@ async function issueCredential(req, res) {
     const sellOfferId = await createSellOffer(issuerSeed, nftId, subjectAddress);
 
     res.json({
-        message: "Credential issued successfully! The credential data can be found on IPFS at the following URI. Send the NFT ID and Sell Offer ID to the subject to receive the credential.",
+        message: `Credential issued successfully! View credential data at the URI and the ` +
+            `NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ` +
+            `subject for acceptance.`,
         URI: URI,
         nftId: nftId,
         sellOfferId: sellOfferId
@@ -22,7 +24,16 @@ async function issueCredential(req, res) {
 }
 
 async function receiveCredential(req, res) {
-    // TODO: Implement
+    const { subjectSeed, sellOfferId } = req.body;
+
+    console.log(subjectSeed, sellOfferId);
+
+    const nft = await acceptSellOffer(subjectSeed, sellOfferId);
+
+    res.json({
+        message: "Credential received successfully!",
+        nft: nft
+    });
 }
 
 async function verifyCredential(req, res) {

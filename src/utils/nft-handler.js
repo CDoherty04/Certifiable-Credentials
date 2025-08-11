@@ -34,7 +34,7 @@ async function mintNFT(issuerSeed, credentialDataURI) {
 
     const mintedNFT = nfts.result.account_nfts[0].NFTokenID;
     console.log('\n=== Minted NFT:', mintedNFT);
-    return mintedNFT; 
+    return mintedNFT;
 
   } catch (error) {
     console.error("Error minting NFT:", error);
@@ -80,7 +80,7 @@ async function createSellOffer(issuerSeed, nftId, subjectAddress) {
     // Get Most Recent Sell Offer ID
     const sellOfferId = sellOffers.result.offers[0].nft_offer_index;
     console.log('\n=== Sell Offer ID:', sellOfferId);
-    return sellOfferId; 
+    return sellOfferId;
 
   } catch (error) {
     console.error("Error creating sell offer:", error);
@@ -92,17 +92,48 @@ async function createSellOffer(issuerSeed, nftId, subjectAddress) {
   }
 }
 
+async function acceptSellOffer(subjectSeed, nftOfferId) {
+  const wallet = xrpl.Wallet.fromSeed(subjectSeed);
+  const client = new xrpl.Client(net);
+
+  try {
+    await client.connect();
+
+    const transactionParams = {
+      TransactionType: "NFTokenAcceptOffer",
+      Account: wallet.address,
+      NFTokenSellOffer: nftOfferId,
+    };
+
+    console.log('Accepting sell offer...');
+
+    // Submit transaction
+    const tx = await client.submitAndWait(transactionParams, { wallet });
+
+    // Report result
+    console.log('\n=== Transaction result:', tx.result.meta.TransactionResult);
+
+    // Get NFT
+    const nfts = await client.request({
+      method: "account_nfts",
+      account: wallet.address,
+    });
+    const nft = nfts.result.account_nfts[0];
+
+    return nft;
+
+  } catch (error) {
+    console.error("Error accepting sell offer:", error);
+    console.log('\n=== Error accepting sell offer:', error.message); // Use error.message
+  } finally {
+    if (client && client.isConnected()) { // Check if connected before disconnecting
+      await client.disconnect();
+    }
+  }
+}
+
 module.exports = {
   mintNFT,
-  createSellOffer
+  createSellOffer,
+  acceptSellOffer
 };
-
-// Testing
-// const issuerSeed = "sEdT64PFzFdLKDBvZ2Sa97L2KeCEvNm";
-// const credentialDataURI = "https://ipfs.io/ipfs/bafybeigjro2d2tc43bgv7e4sxqg7f5jga7kjizbk7nnmmyhmq35dtz6deq";
-// const subjectAddress = "r9yRYZsfBagAS6yVReqB1imYNruMiRtE8u";
-
-// (async () => {
-//   const nftId = await mintNFT(issuerSeed, credentialDataURI);
-//   const offerId = await createSellOffer(issuerSeed, nftId, subjectAddress);
-// })();

@@ -46,7 +46,7 @@ class CredentialServer {
             await routes.issueCredential(req, res);
         });
 
-        this.app.get('/api/receiveCredential/:credentialId', async (req, res) => {
+        this.app.post('/api/receiveCredential', async (req, res) => {
             await routes.receiveCredential(req, res);
         });
 
