@@ -22,19 +22,13 @@ async function mintNFT(issuerSeed, credentialDataURI) {
 
     // Submit transaction
     const tx = await client.submitAndWait(transactionParams, { wallet });
-
-    // Get minted NFTs
-    const nfts = await client.request({
-      method: "account_nfts",
-      account: wallet.address,
-    });
+    const nftId = tx.result.meta.nftoken_id;
+    const mintedNFT = await getNFTbyId(nftId);
 
     // Report results
     console.log('\n=== Transaction result:', tx.result.meta.TransactionResult);
-    console.log('\n=== NFTs:', JSON.stringify(nfts, null, 2));
-
-    const mintedNFT = nfts.result.account_nfts[0].NFTokenID;
-    console.log('\n=== Minted NFT:', mintedNFT);
+    console.log('\n=== NFT ID:', nftId);
+    console.log('\n=== Minted NFT:', JSON.stringify(mintedNFT, null, 2));
     return mintedNFT;
 
   } catch (error) {
@@ -78,8 +72,8 @@ async function createSellOffer(issuerSeed, nftId, subjectAddress) {
     console.log('\n=== Transaction result:', tx.result.meta.TransactionResult);
     console.log('\n=== Sell Offers:', JSON.stringify(sellOffers, null, 2));
 
-    // Get Most Recent Sell Offer ID
-    const sellOfferId = sellOffers.result.offers[0].nft_offer_index;
+    // Get last NFT in array
+    const sellOfferId = sellOffers.result.offers[sellOffers.result.offers.length - 1].nft_offer_index;
     console.log('\n=== Sell Offer ID:', sellOfferId);
     return sellOfferId;
 
@@ -127,6 +121,7 @@ async function acceptSellOffer(subjectSeed, nftOfferId) {
 
     console.log('NFT:', JSON.stringify(nft, null, 2));
 
+    console.log('\n=== Final NFT:', JSON.stringify(nft, null, 2));
     return nft;
 
   } catch (error) {
@@ -171,8 +166,9 @@ async function getNFTbyId(nftId) {
       nft_id: nftId,
     });
 
-    console.log(nft);
+    console.log('getNFTbyId nft:', nft);
     return nft.result;
+
   } catch (error) {
     console.error("Error getting NFT info:", error);
   } finally {

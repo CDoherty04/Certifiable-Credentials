@@ -113,7 +113,7 @@ function copyNftId() {
 
 async function receiveCredential(formData) {
     // Make POST request
-    const response = await fetch('http://localhost:3000/api/receiveCredential', {
+    const response = await fetch('/api/receiveCredential', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

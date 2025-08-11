@@ -11,8 +11,8 @@ async function issueCredential(req, res) {
     const URI = `https://ipfs.io/ipfs/${CID}`;
 
     // Create Credential Object
-    const nftId = await mintNFT(issuerSeed, URI);
-    const sellOfferId = await createSellOffer(issuerSeed, nftId, subjectAddress);
+    const nft = await mintNFT(issuerSeed, URI);
+    const sellOfferId = await createSellOffer(issuerSeed, nft.nft_id, subjectAddress);
 
     res.json({
         success: true,
@@ -20,7 +20,7 @@ async function issueCredential(req, res) {
             'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
             'subject for acceptance.',
         uri: URI,
-        nftId: nftId,
+        nftId: nft.nft_id,
         sellOfferId: sellOfferId
     });
 }
