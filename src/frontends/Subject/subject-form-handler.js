@@ -1,5 +1,3 @@
-const { Wallet } = require('xrpl');
-
 async function handleFormSubmission(e) {
     e.preventDefault();
 
@@ -8,17 +6,16 @@ async function handleFormSubmission(e) {
     // Show loading state
     statusDiv.style.display = 'block';
     statusDiv.className = 'status loading';
-    statusDiv.textContent = 'Issuing credential...';
+    statusDiv.textContent = 'Receiving credential...';
     submitButton.disabled = true;
 
-    // Call issueCredential
+    // Call receiveCredential
     try {
-        const serverRequestJSON = prepareFormData(formData);
-        const response = await issueCredential(serverRequestJSON);
+        const response = await receiveCredential(formData);
         if (response.ok) {
             const result = await response.json();
             statusDiv.className = 'status success';
-            statusDiv.textContent = "Response: " + JSON.stringify(result);
+            statusDiv.textContent = "Response: " + JSON.stringify(result, null, 2);
         } else {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -33,15 +30,14 @@ async function handleFormSubmission(e) {
     return false; // Prevent form submission
 }
 
-async function issueCredential(serverRequestJSON) {
+async function receiveCredential(formData) {
     // Make POST request
-    console.log(JSON.stringify(serverRequestJSON));
-    const response = await fetch('http://localhost:3000/issueCredential', {
+    const response = await fetch('http://localhost:3000/api/receiveCredential', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(serverRequestJSON)
+        body: JSON.stringify(formData)
     });
 
     return response;
@@ -50,10 +46,8 @@ async function issueCredential(serverRequestJSON) {
 function getElements() {
     // Get form data
     const formData = {
-        issuerSeed: document.getElementById('issuerSeed').value,
-        subjectAddress: document.getElementById('subjectAddress').value,
-        subjectEmail: document.getElementById('subjectEmail').value,
-        credentialData: JSON.parse(document.getElementById('credentialData').value)
+        subjectSeed: document.getElementById('subjectSeed').value,
+        sellOfferId: document.getElementById('sellOfferId').value
     };
 
     // Get other elements

@@ -12,7 +12,24 @@
 <body>
     <div class="container">
         <h1>Credential Subject</h1>
-        <h2>To be implemented</h2>
+        <h3>You will need a Sell Offer ID from the issuer to receive the credential.</h3>
+
+        <form id="credentialForm" onsubmit="handleFormSubmission(event)">
+            <div class="form-group">
+                <label for="subjectSeed">Subject Seed:</label>
+                <input type="text" id="subjectSeed" name="subjectSeed" 
+                    placeholder="Enter the subject's seed (sEd...)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sellOfferId">Sell Offer ID:</label>
+                <input type="text" id="sellOfferId" name="sellOfferId" 
+                    placeholder="Enter the sell offer ID" required>
+            </div>
+
+            <button type="submit">Receive Credential</button>
+        </form>
+
         <button onclick="window.location.href = '/'"> ← Not a Subject?</button>
         <div id="status" class="status" style="display: none;"></div>
     </div>

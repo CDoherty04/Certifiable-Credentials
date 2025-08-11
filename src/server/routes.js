@@ -1,6 +1,7 @@
 const path = require('path');
 const { StoreCredentialData } = require('../utils/pinata');
 const { mintNFT, createSellOffer, acceptSellOffer } = require('../utils/nft-handler');
+const xrpl = require('xrpl');
 
 async function issueCredential(req, res) {
     const { issuerSeed, subjectAddress, subjectEmail, credentialData } = req.body;
@@ -14,9 +15,9 @@ async function issueCredential(req, res) {
     const sellOfferId = await createSellOffer(issuerSeed, nftId, subjectAddress);
 
     res.json({
-        message: `Credential issued successfully! View credential data at the URI and the ` +
-            `NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ` +
-            `subject for acceptance.`,
+        message: 'Credential issued successfully! View credential data at the URI and the ' +
+            'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
+            'subject for acceptance.',
         URI: URI,
         nftId: nftId,
         sellOfferId: sellOfferId
@@ -29,10 +30,13 @@ async function receiveCredential(req, res) {
     console.log(subjectSeed, sellOfferId);
 
     const nft = await acceptSellOffer(subjectSeed, sellOfferId);
+    const URI = xrpl.convertHexToString(nft.URI);
 
     res.json({
-        message: "Credential received successfully!",
-        nft: nft
+        message: 'Credential received successfully! View credential data at the URI and the ' +
+            'NFT at https://devnet.xrpl.org (Search the nftId).',
+        nft: nft,
+        URI: URI
     });
 }
 
