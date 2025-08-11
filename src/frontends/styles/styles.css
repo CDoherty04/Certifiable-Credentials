@@ -525,6 +525,28 @@ button:active {
     border: none;
 }
 
+.sell-offer-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sell-offer-header h4 {
+    color: #17a2b8;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.sell-offer-header .important-note {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
 .nft-id-container {
     display: flex;
     flex-direction: column;
