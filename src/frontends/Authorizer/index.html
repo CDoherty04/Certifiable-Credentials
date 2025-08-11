@@ -22,7 +22,8 @@
                 <div class="form-group">
                     <label for="issuerAddress">Add New Trusted Issuer:</label>
                     <div class="input-with-button">
-                        <input type="text" id="issuerAddress" placeholder="Enter issuer wallet address" required>
+                        <!-- Regex to match 35 characters starting with 'r' -->
+                        <input type="text" id="issuerAddress" placeholder="Enter issuer wallet address" pattern="^r[a-zA-Z0-9]{34}$" required>
                         <button type="button" onclick="addTrustedIssuer()" class="add-button">Add</button>
                     </div>
                 </div>
@@ -35,6 +36,9 @@
                     <!-- Trusted issuers will be populated here -->
                 </div>
             </div>
+
+            <!-- Trusted Issuers Status Display -->
+            <div id="trustedIssuersStatus" class="status" style="display: none;"></div>
         </div>
 
         <!-- Verify Credential Section -->
@@ -45,10 +49,10 @@
                 <input type="text" id="nftId" placeholder="Enter NFT ID to verify" required>
             </div>
             <button type="button" onclick="verifyCredential()" class="action-button">Verify Credential</button>
+            <!-- Verify Credential Status Display -->
+            <div id="verifyCredentialStatus" class="status" style="display: none;"></div>
         </div>
 
-        <!-- Status Display -->
-        <div id="status" class="status" style="display: none;"></div>
         
         <!-- Navigation -->
         <button onclick="window.location.href = '/'" class="nav-button">← Not an Authorizer?</button>

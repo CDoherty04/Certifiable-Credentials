@@ -122,6 +122,10 @@ button:active {
     font-weight: 500;
 }
 
+.status.pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
 .success {
     background-color: #d4edda;
     color: #155724;
