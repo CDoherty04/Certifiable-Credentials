@@ -14,20 +14,111 @@ async function handleFormSubmission(e) {
         const response = await receiveCredential(formData);
         if (response.ok) {
             const result = await response.json();
-            statusDiv.className = 'status success';
-            statusDiv.textContent = "Response: " + JSON.stringify(result, null, 2);
+            
+            if (result.success) {
+                // Hide status and show results
+                statusDiv.style.display = 'none';
+                displayResults(result);
+            } else {
+                // Show error in status
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `Error: ${result.message || 'Unknown error occurred'}`;
+                statusDiv.style.display = 'block';
+            }
         } else {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
     } catch (error) {
         statusDiv.className = 'status error';
         statusDiv.textContent = `Error: ${error.message}`;
+        statusDiv.style.display = 'block';
         console.error('Error:', error);
     } finally {
         submitButton.disabled = false;
     }
 
     return false; // Prevent form submission
+}
+
+function displayResults(result) {
+    const resultsDiv = document.getElementById('results');
+    const credentialDataLink = document.getElementById('credentialDataLink');
+    const nftExplorerLink = document.getElementById('nftExplorerLink');
+    const nftIdDisplay = document.getElementById('nftIdDisplay');
+    
+    // Set up the credential data link
+    if (result.uri) {
+        credentialDataLink.href = result.uri;
+        credentialDataLink.style.display = 'inline-block';
+    } else {
+        credentialDataLink.style.display = 'none';
+    }
+    
+    // Set up the NFT explorer link
+    if (result.nft && result.nft.NFTokenID) {
+        nftExplorerLink.href = `https://devnet.xrpl.org/nft/${result.nft.NFTokenID}`;
+        nftExplorerLink.style.display = 'inline-block';
+    } else {
+        nftExplorerLink.style.display = 'none';
+    }
+    
+    // Display the NFT ID in the textarea
+    if (result.nft && result.nft.NFTokenID) {
+        nftIdDisplay.value = result.nft.NFTokenID;
+    }
+    
+    // Show the results section
+    resultsDiv.style.display = 'block';
+}
+
+function copyNftId() {
+    const nftIdDisplay = document.getElementById('nftIdDisplay');
+    const copyButton = document.getElementById('copyButton');
+    
+    if (nftIdDisplay.value) {
+        try {
+            // Copy the text
+            navigator.clipboard.writeText(nftIdDisplay.value).then(() => {
+                // Show success feedback
+                const originalText = copyButton.textContent;
+                copyButton.textContent = '✅';
+                copyButton.className = 'copy-button copied';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                    copyButton.className = 'copy-button';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = nftIdDisplay.value;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show success feedback
+                const originalText = copyButton.textContent;
+                copyButton.textContent = '✅';
+                copyButton.className = 'copy-button copied';
+                
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                    copyButton.className = 'copy-button';
+                }, 2000);
+            });
+        } catch (err) {
+            // Show error feedback
+            copyButton.textContent = '❌';
+            copyButton.className = 'copy-button error';
+            
+            setTimeout(() => {
+                copyButton.textContent = '📋';
+                copyButton.className = 'copy-button';
+            }, 2000);
+        }
+    }
 }
 
 async function receiveCredential(formData) {

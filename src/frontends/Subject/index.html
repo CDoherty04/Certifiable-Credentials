@@ -38,6 +38,30 @@
         <!-- Status Display -->
         <div id="status" class="status" style="display: none;"></div>
         
+        <!-- Results Display -->
+        <div id="results" class="results" style="display: none;">
+            <div class="result-links">
+                <a id="credentialDataLink" href="#" target="_blank" class="result-link">
+                    Find the stored Credential Data on IPFS!
+                </a>
+                <a id="nftExplorerLink" href="#" target="_blank" class="result-link">
+                    Find the NFT on XRPL Explorer!
+                </a>
+            </div>
+            <div id="nftInfo" class="nft-info">
+                <div class="nft-header">
+                    <h4>Important: Share with Companies</h4>
+                    <p class="important-note">Copy this NFT ID to send to your desired companies for hire.</p>
+                </div>
+                <div class="nft-id-container">
+                    <div class="id-copy-container">
+                        <textarea id="nftIdDisplay" readonly class="nft-id-textarea"></textarea>
+                        <button id="copyButton" class="copy-button" onclick="copyNftId()">📋</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Navigation -->
         <button onclick="window.location.href = '/'" class="nav-button">← Not a Subject?</button>
     </div>
