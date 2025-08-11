@@ -349,5 +349,147 @@ button:active {
 }
 
 .nav-button:hover {
-    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Results Section Styles */
+.results {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #28a745;
+}
+
+.results h3 {
+    color: #28a745;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.result-message {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e1e5e9;
+    color: #555;
+    line-height: 1.5;
+}
+
+.result-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.result-link {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.result-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.sell-offer-info {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e1e5e9;
+}
+
+.sell-offer-info p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.sell-offer-info p:last-child {
+    margin-bottom: 0;
+}
+
+.info-note {
+    font-style: italic;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+/* Copy Button Styles */
+.copy-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.copy-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.copy-button.copied {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.copy-button.error {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+/* Sell Offer Layout Styles */
+.sell-offer-row {
+    margin-bottom: 15px;
+}
+
+.sell-offer-row label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.id-copy-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.sell-offer-id-textarea {
+    flex: 1;
+    min-height: 60px;
+    padding: 10px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    resize: vertical;
+    background: #f8f9fa;
+    color: #333;
+    line-height: 1.4;
+}
+
+.sell-offer-id-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }

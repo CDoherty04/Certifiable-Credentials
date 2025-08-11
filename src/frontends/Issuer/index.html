@@ -48,6 +48,28 @@
         <!-- Status Display -->
         <div id="status" class="status" style="display: none;"></div>
         
+        <!-- Results Display -->
+        <div id="results" class="results" style="display: none;">
+            <div class="result-links">
+                <a id="credentialDataLink" href="#" target="_blank" class="result-link">
+                    Find the stored Credential Data on IPFS!
+                </a>
+                <a id="nftExplorerLink" href="#" target="_blank" class="result-link">
+                    Find the NFT on XRPL Explorer!
+                </a>
+            </div>
+            <div id="sellOfferInfo" class="sell-offer-info">
+                <div class="sell-offer-row">
+                    <label for="sellOfferId">Sell Offer ID:</label>
+                    <div class="id-copy-container">
+                        <textarea id="sellOfferId" readonly class="sell-offer-id-textarea"></textarea>
+                        <button id="copyButton" class="copy-button" onclick="copySellOfferId()">📋</button>
+                    </div>
+                </div>
+                <p class="info-note">Send this Sell Offer ID to the subject for acceptance.</p>
+            </div>
+        </div>
+        
         <!-- Navigation -->
         <button onclick="window.location.href = '/'" class="nav-button">← Not an Issuer?</button>
     </div>
