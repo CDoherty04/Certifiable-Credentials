@@ -9,14 +9,13 @@ async function redirectToRole(e) {
     statusDiv.textContent = 'Redirecting to ' + formData.role + ' page...';
     submitButton.disabled = true;
 
-
-    // Navigate to the appropriate route instead of fetching HTML
-    if (formData.role === 'issuer') {
-        window.location.href = '/issuer';
-    } else if (formData.role === 'subject') {
-        window.location.href = '/receiver';
-    } else if (formData.role === 'authorizer') {
-        window.location.href = '/authorizer';
+    // Navigate to the appropriate route
+    if (formData.role === 'school') {
+        window.location.href = '/school';
+    } else if (formData.role === 'student') {
+        window.location.href = '/student';
+    } else if (formData.role === 'company') {
+        window.location.href = '/company';
     }
 
     return;

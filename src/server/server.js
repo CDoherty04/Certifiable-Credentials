@@ -16,10 +16,10 @@ class CredentialServer {
     setupMiddleware() {
         this.app.use(cors());
         this.app.use(express.json());
-        this.app.use(express.static(path.join(__dirname, '../frontends/General')));
-        this.app.use(express.static(path.join(__dirname, '../frontends/Issuer')));
-        this.app.use(express.static(path.join(__dirname, '../frontends/Subject')));
-        this.app.use(express.static(path.join(__dirname, '../frontends/Authorizer')));
+
+        // Serve static files from the frontends directory (for shared resources like styles.css)
+        this.app.use(express.static(path.join(__dirname, '../frontends/styles')));
+        this.app.use(express.static(path.join(__dirname, '../frontends/scripts')));
     }
 
     setupRoutes() {
@@ -29,15 +29,15 @@ class CredentialServer {
             routes.getGeneralFrontend(req, res);
         });
 
-        this.app.get('/issuer', (req, res) => {
+        this.app.get('/school', (req, res) => {
             routes.getIssuerFrontend(req, res);
         });
 
-        this.app.get('/receiver', (req, res) => {
+        this.app.get('/student', (req, res) => {
             routes.getSubjectFrontend(req, res);
         });
 
-        this.app.get('/authorizer', (req, res) => {
+        this.app.get('/company', (req, res) => {
             routes.getAuthorizerFrontend(req, res);
         });
 
