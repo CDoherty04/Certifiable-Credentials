@@ -14,11 +14,11 @@ async function handleFormSubmission(e) {
         const response = await receiveCredential(formData);
         if (response.ok) {
             const result = await response.json();
-            
+
             if (result.success) {
                 // Hide status and show results
                 statusDiv.style.display = 'none';
-                displayResults(result);
+                subjectDisplayResults(result);
             } else {
                 // Show error in status
                 statusDiv.className = 'status error';
@@ -40,33 +40,23 @@ async function handleFormSubmission(e) {
     return false; // Prevent form submission
 }
 
-function displayResults(result) {
+function subjectDisplayResults(result) {
     const resultsDiv = document.getElementById('results');
-    const credentialDataLink = document.getElementById('credentialDataLink');
-    const nftExplorerLink = document.getElementById('nftExplorerLink');
+    const subjectCredentialDataLink = document.getElementById('subjectCredentialDataLink');
+    const subjectNftExplorerLink = document.getElementById('subjectNftExplorerLink');
     const nftIdDisplay = document.getElementById('nftIdDisplay');
-    
+
     // Set up the credential data link
-    if (result.uri) {
-        credentialDataLink.href = result.uri;
-        credentialDataLink.style.display = 'inline-block';
-    } else {
-        credentialDataLink.style.display = 'none';
-    }
-    
+    subjectCredentialDataLink.href = result.uri;
+    subjectCredentialDataLink.style.display = 'inline-block';
+
     // Set up the NFT explorer link
-    if (result.nft && result.nft.NFTokenID) {
-        nftExplorerLink.href = `https://devnet.xrpl.org/nft/${result.nft.NFTokenID}`;
-        nftExplorerLink.style.display = 'inline-block';
-    } else {
-        nftExplorerLink.style.display = 'none';
-    }
-    
+    subjectNftExplorerLink.href = `https://devnet.xrpl.org/nft/${result.nftId}`;
+    subjectNftExplorerLink.style.display = 'inline-block';
+
     // Display the NFT ID in the textarea
-    if (result.nft && result.nft.NFTokenID) {
-        nftIdDisplay.value = result.nft.NFTokenID;
-    }
-    
+    nftIdDisplay.value = result.nftId;
+
     // Show the results section
     resultsDiv.style.display = 'block';
 }
@@ -74,7 +64,7 @@ function displayResults(result) {
 function copyNftId() {
     const nftIdDisplay = document.getElementById('nftIdDisplay');
     const copyButton = document.getElementById('copyButton');
-    
+
     if (nftIdDisplay.value) {
         try {
             // Copy the text
@@ -83,7 +73,7 @@ function copyNftId() {
                 const originalText = copyButton.textContent;
                 copyButton.textContent = '✅';
                 copyButton.className = 'copy-button copied';
-                
+
                 // Reset button after 2 seconds
                 setTimeout(() => {
                     copyButton.textContent = originalText;
@@ -97,12 +87,12 @@ function copyNftId() {
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                
+
                 // Show success feedback
                 const originalText = copyButton.textContent;
                 copyButton.textContent = '✅';
                 copyButton.className = 'copy-button copied';
-                
+
                 setTimeout(() => {
                     copyButton.textContent = originalText;
                     copyButton.className = 'copy-button';
@@ -112,7 +102,7 @@ function copyNftId() {
             // Show error feedback
             copyButton.textContent = '❌';
             copyButton.className = 'copy-button error';
-            
+
             setTimeout(() => {
                 copyButton.textContent = '📋';
                 copyButton.className = 'copy-button';

@@ -34,12 +34,13 @@ async function receiveCredential(req, res) {
         success: true,
         message: 'Credential received successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId).',
-        nft: nft,
+        nftId: nft.NFTokenID,
         uri: xrpl.convertHexToString(nft.URI)
     });
 }
 
 async function verifyCredential(req, res) {
+    console.log('Verifying credential...');
     const { nftId, authorizedIssuers } = req.body;
 
     // Get the issuer address from the nftId

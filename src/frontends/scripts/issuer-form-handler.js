@@ -14,11 +14,11 @@ async function handleFormSubmission(e) {
         const response = await issueCredential(formData);
         if (response.ok) {
             const result = await response.json();
-            
+
             if (result.success) {
                 // Hide status and show results
                 statusDiv.style.display = 'none';
-                displayResults(result);
+                issuerDisplayResults(result);
             } else {
                 // Show error in status
                 statusDiv.className = 'status error';
@@ -40,33 +40,23 @@ async function handleFormSubmission(e) {
     return false; // Prevent form submission
 }
 
-function displayResults(result) {
+function issuerDisplayResults(result) {
     const resultsDiv = document.getElementById('results');
-    const credentialDataLink = document.getElementById('credentialDataLink');
-    const nftExplorerLink = document.getElementById('nftExplorerLink');
+    const issuerCredentialDataLink = document.getElementById('issuerCredentialDataLink');
+    const issuerNftExplorerLink = document.getElementById('issuerNftExplorerLink');
     const sellOfferId = document.getElementById('sellOfferId');
-    
+
     // Set up the credential data link
-    if (result.uri) {
-        credentialDataLink.href = result.uri;
-        credentialDataLink.style.display = 'inline-block';
-    } else {
-        credentialDataLink.style.display = 'none';
-    }
-    
+    issuerCredentialDataLink.href = result.uri;
+    issuerCredentialDataLink.style.display = 'inline-block';
+
     // Set up the NFT explorer link
-    if (result.nftId) {
-        nftExplorerLink.href = `https://devnet.xrpl.org/nft/${result.nftId}`;
-        nftExplorerLink.style.display = 'inline-block';
-    } else {
-        nftExplorerLink.style.display = 'none';
-    }
-    
-    // Display the sell offer ID
-    if (result.sellOfferId) {
-        sellOfferId.value = result.sellOfferId;
-    }
-    
+    issuerNftExplorerLink.href = `https://devnet.xrpl.org/nft/${result.nftId}`;
+    issuerNftExplorerLink.style.display = 'inline-block';
+
+    // Display the sell offer ID in the textarea
+    sellOfferId.value = result.sellOfferId;
+
     // Show the results section
     resultsDiv.style.display = 'block';
 }
@@ -74,7 +64,7 @@ function displayResults(result) {
 function copySellOfferId() {
     const sellOfferId = document.getElementById('sellOfferId');
     const copyButton = document.getElementById('copyButton');
-    
+
     if (sellOfferId.value) {
         try {
             // Copy the text
@@ -83,7 +73,7 @@ function copySellOfferId() {
                 const originalText = copyButton.textContent;
                 copyButton.textContent = '✅';
                 copyButton.className = 'copy-button copied';
-                
+
                 // Reset button after 2 seconds
                 setTimeout(() => {
                     copyButton.textContent = originalText;
@@ -97,12 +87,12 @@ function copySellOfferId() {
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                
+
                 // Show success feedback
                 const originalText = copyButton.textContent;
                 copyButton.textContent = '✅';
                 copyButton.className = 'copy-button copied';
-                
+
                 setTimeout(() => {
                     copyButton.textContent = originalText;
                     copyButton.className = 'copy-button';
@@ -112,7 +102,7 @@ function copySellOfferId() {
             // Show error feedback
             copyButton.textContent = '❌';
             copyButton.className = 'copy-button error';
-            
+
             setTimeout(() => {
                 copyButton.textContent = '📋';
                 copyButton.className = 'copy-button';
@@ -154,28 +144,4 @@ function getElements() {
         console.error('Error in getElements:', error);
         throw error;
     }
-}
-
-function test(e) {
-    console.log('=== ISSUER FRONTEND TEST FUNCTION START ===');
-    console.log('Test function called');
-    console.log('Event object:', e);
-    console.log('Event type:', e.type);
-
-    try {
-        e.preventDefault();
-        console.log('Default prevented', e);
-
-        console.log('About to call getElements()...');
-        const { formData, statusDiv, submitButton } = getElements();
-        console.log('getElements() completed successfully');
-        console.log('Form data:', formData);
-        console.log('Status div:', statusDiv);
-        console.log('Submit button:', submitButton);
-    } catch (error) {
-        console.error('Error in test function:', error);
-    }
-
-    console.log('=== ISSUER FRONTEND TEST FUNCTION END ===');
-    return false;
 }

@@ -93,7 +93,6 @@ async function createSellOffer(issuerSeed, nftId, subjectAddress) {
   }
 }
 
-// TODO: I don't think we need the seed, just the address
 async function acceptSellOffer(subjectSeed, nftOfferId) {
   const wallet = xrpl.Wallet.fromSeed(subjectSeed);
   const client = new xrpl.Client(net);
@@ -120,7 +119,13 @@ async function acceptSellOffer(subjectSeed, nftOfferId) {
       method: "account_nfts",
       account: wallet.address,
     });
-    const nft = nfts.result.account_nfts[0];
+
+    console.log('NFTs:', JSON.stringify(nfts, null, 2));
+
+    // Get last NFT in array
+    const nft = nfts.result.account_nfts[nfts.result.account_nfts.length - 1];
+
+    console.log('NFT:', JSON.stringify(nft, null, 2));
 
     return nft;
 
@@ -134,18 +139,18 @@ async function acceptSellOffer(subjectSeed, nftOfferId) {
   }
 }
 
-async function getNFTs(subjectAddress) {
+async function getNFTsByAddress(address) {
   const client = new xrpl.Client(net);
 
   try {
     await client.connect();
 
-    const nfts = await client.request({
+    const response = await client.request({
       method: "account_nfts",
-      account: subjectAddress,
+      account: address,
     });
 
-    return nfts.result.account_nfts;
+    return response.result.account_nfts;
   } catch (error) {
     console.error("Error getting NFT info:", error);
   } finally {
@@ -181,6 +186,6 @@ module.exports = {
   mintNFT,
   createSellOffer,
   acceptSellOffer,
-  getNFTs,
+  getNFTsByAddress,
   getNFTbyId
 };

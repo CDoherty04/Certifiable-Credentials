@@ -12,32 +12,32 @@
 <body>
     <div class="container">
         <h1>Credential Issuer</h1>
-        
+
         <!-- Credential Issuance Section -->
         <div class="section">
             <h3>Issue New Credential</h3>
             <form id="credentialForm" onsubmit="handleFormSubmission(event)">
                 <div class="form-group">
                     <label for="issuerSeed">Issuer Seed:</label>
-                    <input type="text" id="issuerSeed" name="issuerSeed" 
-                        placeholder="Enter the issuer's seed (sEd...)" required>
+                    <input type="text" id="issuerSeed" name="issuerSeed" placeholder="Enter the issuer's seed (sEd...)"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="subjectAddress">Subject Address:</label>
-                    <input type="text" id="subjectAddress" name="subjectAddress" 
+                    <input type="text" id="subjectAddress" name="subjectAddress"
                         placeholder="Enter the subject's address (r...)" required>
                 </div>
 
                 <div class="form-group">
                     <label for="subjectEmail">Subject Email:</label>
-                    <input type="email" id="subjectEmail" name="subjectEmail" 
-                        placeholder="Enter the subject's email" required>
+                    <input type="email" id="subjectEmail" name="subjectEmail" placeholder="Enter the subject's email"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="credentialData">Credential Data (JSON):</label>
-                    <textarea id="credentialData" name="credentialData" 
+                    <textarea id="credentialData" name="credentialData"
                         placeholder='{"key": "value", "example": "data"}' required></textarea>
                 </div>
 
@@ -47,29 +47,31 @@
 
         <!-- Status Display -->
         <div id="status" class="status" style="display: none;"></div>
-        
+
         <!-- Results Display -->
         <div id="results" class="results" style="display: none;">
             <div class="result-links">
-                <a id="credentialDataLink" href="#" target="_blank" class="result-link">
+                <a id="issuerCredentialDataLink" href="#" target="_blank" class="result-link">
                     Find the stored Credential Data on IPFS!
                 </a>
-                <a id="nftExplorerLink" href="#" target="_blank" class="result-link">
+                <a id="issuerNftExplorerLink" href="#" target="_blank" class="result-link">
                     Find the NFT on XRPL Explorer!
                 </a>
             </div>
             <div id="sellOfferInfo" class="sell-offer-info">
+                <div class="sell-offer-header">
+                    <h4>Important: Share with New Graduate</h4>
+                    <p class="important-note">Copy this Sell Offer ID to send to your new graduate.</p>
+                </div>
                 <div class="sell-offer-row">
-                    <label for="sellOfferId">Sell Offer ID:</label>
                     <div class="id-copy-container">
                         <textarea id="sellOfferId" readonly class="sell-offer-id-textarea"></textarea>
                         <button id="copyButton" class="copy-button" onclick="copySellOfferId()">📋</button>
                     </div>
                 </div>
-                <p class="info-note">Send this Sell Offer ID to the subject for acceptance.</p>
             </div>
         </div>
-        
+
         <!-- Navigation -->
         <button onclick="window.location.href = '/'" class="nav-button">← Not an Issuer?</button>
     </div>
