@@ -12,31 +12,33 @@
 <body>
     <div class="container">
         <h1>Credential Platform</h1>
-
-        <h2>Select your role</h2>
-
-        <form id="roleForm" onsubmit="redirectToRole(event)">
-            <div class="form-group">
-                <div class="option">
-                    <label for="school">School</label>
-                    <input type="radio" id="school" name="role" value="school" required>
+        
+        <!-- Role Selection Section -->
+        <div class="section">
+            <h3>Select Your Role</h3>
+            <form id="roleForm" onsubmit="redirectToRole(event)">
+                <div class="form-group">
+                    <div class="option">
+                        <label for="school">School</label>
+                        <input type="radio" id="school" name="role" value="school" required>
+                    </div>
+                    <div class="option">
+                        <label for="student">Student</label>
+                        <input type="radio" id="student" name="role" value="student" required>
+                    </div>
+                    <div class="option">
+                        <label for="company">Company</label>
+                        <input type="radio" id="company" name="role" value="company" required>
+                    </div>
                 </div>
-                <div class="option">
-                    <label for="student">Student</label>
-                    <input type="radio" id="student" name="role" value="student" required>
-                </div>
-                <div class="option">
-                    <label for="company">Company</label>
-                    <input type="radio" id="company" name="role" value="company" required>
-                </div>
-            </div>
 
-            <button type="submit">Continue</button>
-        </form>
+                <button type="submit" class="action-button">Continue</button>
+            </form>
+        </div>
 
+        <!-- Status Display -->
         <div id="status" class="status" style="display: none;">Redirecting...</div>
     </div>
-
 </body>
 
 </html>

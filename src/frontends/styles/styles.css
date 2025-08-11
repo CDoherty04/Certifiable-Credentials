@@ -168,3 +168,182 @@ button:active {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+/* Authorizer Page Specific Styles */
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #e1e5e9;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.section h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    font-weight: 500;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.trusted-issuers-list {
+    min-height: 60px;
+}
+
+.issuer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.issuer-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+}
+
+.issuer-address {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #555;
+    word-break: break-all;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.remove-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+    margin: 0;
+}
+
+.remove-button:hover {
+    background: #c82333;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.no-issuers {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+.action-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    margin-top: 15px;
+}
+
+.action-button:hover {
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+}
+
+.nav-button {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    margin-top: 20px;
+}
+
+.nav-button:hover {
+    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+}
+
+.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Combined Trusted Issuers Section Styles */
+.add-issuer-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.issuers-list-section h4 {
+    color: #555;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.input-with-button {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-with-button input {
+    flex: 1;
+    margin: 0;
+}
+
+.add-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.add-button:hover {
+    background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.add-button:active {
+    transform: translateY(0);
+}
+
+/* Additional Page Styling */
+.info-text {
+    background-color: #e7f3ff;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Ensure consistent button styling across all pages */
+.action-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    margin-top: 15px;
+}
+
+.action-button:hover {
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+}
+
+.nav-button {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    margin-top: 20px;
+}
+
+.nav-button:hover {
+    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+}
