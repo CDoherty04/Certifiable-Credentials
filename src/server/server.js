@@ -4,6 +4,7 @@ const path = require('path');
 const fileUpload = require('express-fileupload');
 const routes = require('./routes');
 require('dotenv').config();
+const favicon = require('serve-favicon');
 
 class CredentialServer {
     constructor() {
@@ -16,14 +17,20 @@ class CredentialServer {
 
     setupMiddleware() {
         this.app.use(cors());
-        
+
+        // Serve static files from the public directory (for favicon and other assets)
+        this.app.use('/public', express.static(path.join(__dirname, '..', 'public')));
+
+        // Favicon configuration - serve from the public route
+        this.app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
+
         // Configure fileUpload before express.json to handle multipart forms
         this.app.use(fileUpload({
             limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
             abortOnLimit: true,
             responseOnLimit: "File size limit has been reached"
         }));
-        
+
         // Parse JSON for non-file endpoints
         this.app.use(express.json());
 
