@@ -4,42 +4,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credential Platform</title>
+    <title>Certifiable Credentials - Index Page</title>
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/scripts/general-form-handler.js" defer></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Credential Platform</h1>
-        
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="logo-container">
+                <i class="fas fa-certificate logo-icon"></i>
+            </div>
+            <h1>Certifiable Credentials</h1>
+            <p class="subtitle">Diplomas & Credentials on the XRPL</p>
+        </div>
+
         <!-- Role Selection Section -->
-        <div class="section">
-            <h3>Select Your Role</h3>
+        <div class="section role-selection">
+            <h3><i class="fas fa-users"></i> Choose Your Role</h3>
+            <p class="section-description">Select the role that best describes your relationship with digital
+                credentials</p>
+
             <form id="roleForm" onsubmit="redirectToRole(event)">
-                <div class="form-group">
-                    <div class="option">
-                        <label for="school">School</label>
+                <div class="form-group role-options">
+                    <div class="role-option" onclick="selectRole('school')">
                         <input type="radio" id="school" name="role" value="school" required>
+                        <div class="role-content">
+                            <div class="role-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="role-text">
+                                <label for="school" class="role-title">School or University</label>
+                                <span class="role-description">Issue and manage digital credentials</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="option">
-                        <label for="student">Student</label>
+
+                    <div class="role-option" onclick="selectRole('student')">
                         <input type="radio" id="student" name="role" value="student" required>
+                        <div class="role-content">
+                            <div class="role-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="role-text">
+                                <label for="student" class="role-title">Student</label>
+                                <span class="role-description">Receive and view your credentials</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="option">
-                        <label for="company">Company</label>
+
+                    <div class="role-option" onclick="selectRole('company')">
                         <input type="radio" id="company" name="role" value="company" required>
+                        <div class="role-content">
+                            <div class="role-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="role-text">
+                                <label for="company" class="role-title">Company</label>
+                                <span class="role-description">Verify and validate credentials</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="action-button">Continue</button>
+                <button type="submit" class="action-button continue-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    Continue
+                </button>
             </form>
         </div>
 
+        <!-- Features Section -->
+        <div class="features-section">
+            <h3><i class="fas fa-star"></i> Why Choose Certifiable Credentials?</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Secure</h4>
+                    <p>Blockchain-verified credentials that can't be forged</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-globe"></i>
+                    <h4>Global</h4>
+                    <p>Accessible anywhere, anytime, on any device</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>Instant</h4>
+                    <p>Real-time verification and immediate access</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-leaf"></i>
+                    <h4>Eco-Friendly</h4>
+                    <p>Digital credentials reduce paper waste and environmental impact</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Status Display -->
-        <div id="status" class="status" style="display: none;">Redirecting...</div>
+        <div id="status" class="status" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            Redirecting...
+        </div>
     </div>
+
+    <script>
+        function selectRole(roleId) {
+            // Remove active class from all options
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('active');
+            });
+
+            // Add active class to selected option
+            event.currentTarget.classList.add('active');
+
+            // Check the radio button
+            document.getElementById(roleId).checked = true;
+        }
+    </script>
 </body>
 
 </html>

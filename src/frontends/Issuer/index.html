@@ -4,50 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credential Issuer</title>
+    <title>Certifiable Credentials - Issuer Page</title>
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/scripts/issuer-form-handler.js" defer></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Credential Issuer</h1>
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="logo-container">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+            </div>
+            <h1>Credential Issuer</h1>
+            <p class="subtitle">Issue and manage digital credentials for your students</p>
+        </div>
 
         <!-- Credential Issuance Section -->
-        <div class="section">
-            <h3>Issue New Credential</h3>
+        <div class="section credential-issuance">
+            <h3><i class="fas fa-certificate"></i> Issue New Credential</h3>
+            <p class="section-description">Create a new digital credential by filling out the form below</p>
+            
             <form id="credentialForm">
-                <div class="form-group">
-                    <label for="issuerSeed">Issuer Seed:</label>
-                    <input type="text" id="issuerSeed" name="issuerSeed" placeholder="Enter the issuer's seed (sEd...)"
-                        required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="issuerSeed">
+                            <i class="fas fa-key"></i>
+                            Issuer Seed
+                        </label>
+                        <input type="text" id="issuerSeed" name="issuerSeed" 
+                            placeholder="Enter the issuer's seed (sEd...)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subjectAddress">
+                            <i class="fas fa-user"></i>
+                            Subject Address
+                        </label>
+                        <input type="text" id="subjectAddress" name="subjectAddress"
+                            placeholder="Enter the subject's address (r...)" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="subjectAddress">Subject Address:</label>
-                    <input type="text" id="subjectAddress" name="subjectAddress"
-                        placeholder="Enter the subject's address (r...)" required>
+                    <label for="subjectEmail">
+                        <i class="fas fa-envelope"></i>
+                        Subject Email
+                    </label>
+                    <input type="email" id="subjectEmail" name="subjectEmail" 
+                        placeholder="Enter the subject's email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="subjectEmail">Subject Email:</label>
-                    <input type="email" id="subjectEmail" name="subjectEmail" placeholder="Enter the subject's email"
-                        required>
-                </div>
-
-                <div class="form-group">
-                    <label for="credentialData">Credential Data (JSON):</label>
+                    <label for="credentialData">
+                        <i class="fas fa-file-code"></i>
+                        Credential Data (JSON)
+                    </label>
                     <textarea id="credentialData" name="credentialData"
                         placeholder='{"key": "value", "example": "data"}' required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="imageUpload">Credential Image:</label>
+                    <label for="imageUpload">
+                        <i class="fas fa-image"></i>
+                        Credential Image
+                    </label>
                     <div class="file-upload-container">
                         <div class="drag-drop-area" id="dragDropArea">
                             <div class="drag-drop-content">
-                                <div class="drag-drop-icon">📷</div>
+                                <div class="drag-drop-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
                                 <p class="drag-drop-text">Drag & drop an image here</p>
                                 <p class="drag-drop-subtext">or</p>
                                 <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file-input">
@@ -57,39 +86,56 @@
                     </div>
                 </div>
 
-                <button type="submit" class="action-button">Issue Credential</button>
+                <button type="submit" class="action-button issue-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Issue Credential
+                </button>
             </form>
         </div>
 
         <!-- Status Display -->
-        <div id="status" class="status" style="display: none;"></div>
+        <div id="status" class="status" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            Processing credential...
+        </div>
 
         <!-- Results Display -->
         <div id="results" class="results" style="display: none;">
+            <h3><i class="fas fa-check-circle"></i> Credential Issued Successfully!</h3>
+            
             <div class="result-links">
                 <a id="issuerCredentialDataLink" href="#" target="_blank" class="result-link">
-                    Find the stored Credential Data on IPFS!
+                    <i class="fas fa-database"></i>
+                    View Credential Data on IPFS
                 </a>
                 <a id="issuerNftExplorerLink" href="#" target="_blank" class="result-link">
-                    Find the NFT on XRPL Explorer!
+                    <i class="fas fa-external-link-alt"></i>
+                    View NFT on XRPL Explorer
                 </a>
             </div>
+            
             <div id="sellOfferInfo" class="sell-offer-info">
                 <div class="sell-offer-header">
-                    <h4>Important: Share with New Graduate</h4>
+                    <h4><i class="fas fa-share-alt"></i> Share with New Graduate</h4>
                     <p class="important-note">Copy this Sell Offer ID to send to your new graduate.</p>
                 </div>
                 <div class="sell-offer-row">
                     <div class="id-copy-container">
-                        <textarea id="sellOfferId" readonly class="sell-offer-id-textarea"></textarea>
-                        <button id="copyButton" class="copy-button" onclick="copySellOfferId()">📋</button>
+                        <textarea id="sellOfferId" readonly class="sell-offer-id-textarea"
+                            placeholder="Sell Offer ID will appear here..."></textarea>
+                        <button id="copyButton" class="copy-button" onclick="copySellOfferId()">
+                            <i class="fas fa-copy"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Navigation -->
-        <button onclick="window.location.href = '/'" class="nav-button">← Not an Issuer?</button>
+        <button onclick="window.location.href = '/'" class="nav-button">
+            <i class="fas fa-arrow-left"></i>
+            Not an Issuer?
+        </button>
     </div>
 </body>
 

@@ -4,75 +4,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credential Subject</title>
+    <title>Certifiable Credentials - Subject Page</title>
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/scripts/subject-form-handler.js" defer></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Credential Subject</h1>
-        
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="logo-container">
+                <i class="fas fa-user-graduate logo-icon"></i>
+            </div>
+            <h1>Credential Subject</h1>
+            <p class="subtitle">Receive and manage your digital credentials</p>
+        </div>
+
         <!-- Credential Reception Section -->
-        <div class="section">
-            <h3>Receive Credential</h3>
-            <p class="info-text">You will need a Sell Offer ID from the issuer to receive the credential.</p>
-            
+        <div class="section credential-reception">
+            <h3><i class="fas fa-download"></i> Receive Credential</h3>
+            <div class="info-banner">
+                <i class="fas fa-info-circle"></i>
+                <p>You will need a Sell Offer ID from the issuer to receive the credential.</p>
+            </div>
+
             <form id="credentialForm" onsubmit="handleFormSubmission(event)">
                 <div class="form-group">
-                    <label for="subjectSeed">Subject Seed:</label>
-                    <input type="text" id="subjectSeed" name="subjectSeed" 
+                    <label for="subjectSeed">
+                        <i class="fas fa-key"></i>
+                        Subject Seed
+                    </label>
+                    <input type="text" id="subjectSeed" name="subjectSeed"
                         placeholder="Enter the subject's seed (sEd...)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="sellOfferId">Sell Offer ID:</label>
-                    <input type="text" id="sellOfferId" name="sellOfferId" 
-                        placeholder="Enter the sell offer ID" required>
+                    <label for="sellOfferId">
+                        <i class="fas fa-tag"></i>
+                        Sell Offer ID
+                    </label>
+                    <input type="text" id="sellOfferId" name="sellOfferId" placeholder="Enter the sell offer ID"
+                        required>
                 </div>
 
-                <button type="submit" class="action-button">Receive Credential</button>
+                <button type="submit" class="action-button receive-btn">
+                    <i class="fas fa-download"></i>
+                    Receive Credential
+                </button>
             </form>
         </div>
 
         <!-- Status Display -->
-        <div id="status" class="status" style="display: none;"></div>
-        
+        <div id="status" class="status" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            Processing...
+        </div>
+
         <!-- Results Display -->
         <div id="results" class="results" style="display: none;">
+            <h3><i class="fas fa-check-circle"></i> Credential Received Successfully!</h3>
+
             <div class="result-links">
                 <a id="subjectCredentialDataLink" href="#" target="_blank" class="result-link">
-                    Find the stored Credential Data on IPFS!
+                    <i class="fas fa-database"></i>
+                    View Credential Data on IPFS
                 </a>
                 <a id="subjectNftExplorerLink" href="#" target="_blank" class="result-link">
-                    Find the NFT on XRPL Explorer!
+                    <i class="fas fa-external-link-alt"></i>
+                    View NFT on XRPL Explorer
                 </a>
             </div>
+
             <div id="nftInfo" class="nft-info">
                 <div class="nft-header">
-                    <h4>Important: Share with Companies</h4>
+                    <h4><i class="fas fa-share-alt"></i> Share with Companies</h4>
                     <p class="important-note">Copy this NFT ID to send to your desired companies for hire.</p>
                 </div>
                 <div class="nft-id-container">
                     <div class="id-copy-container">
-                        <textarea id="nftIdDisplay" readonly class="nft-id-textarea"></textarea>
-                        <button id="copyButton" class="copy-button" onclick="copyNftId()">📋</button>
+                        <textarea id="nftIdDisplay" readonly class="nft-id-textarea"
+                            placeholder="NFT ID will appear here..."></textarea>
+                        <button id="copyButton" class="copy-button" onclick="copyNftId()">
+                            <i class="fas fa-copy"></i>
+                        </button>
                     </div>
                 </div>
-                
+
                 <!-- Credential Image Display -->
                 <div id="credentialImageContainer" class="credential-image-container" style="display: none;">
                     <div class="image-wrapper">
                         <img id="credentialImage" class="credential-image" alt="Credential Image" />
                     </div>
-                    <h4>Credential Image</h4>
+                    <h4><i class="fas fa-image"></i> Credential Image</h4>
                 </div>
             </div>
         </div>
-        
+
         <!-- Navigation -->
-        <button onclick="window.location.href = '/'" class="nav-button">← Not a Subject?</button>
+        <button onclick="window.location.href = '/'" class="nav-button">
+            <i class="fas fa-arrow-left"></i>
+            Not a Subject?
+        </button>
     </div>
 </body>
 

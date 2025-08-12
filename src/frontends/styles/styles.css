@@ -785,3 +785,1089 @@ button:active {
     padding: 4px 8px;
     border-radius: 4px;
 }
+
+/* General Page Specific Styles */
+.header-section {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.logo-container {
+    margin-bottom: 20px;
+}
+
+.logo-icon {
+    font-size: 3.5em;
+    color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-section h1 {
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin: 0;
+}
+
+.role-selection {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+}
+
+.section-description {
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.role-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.role-option {
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.role-option:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.role-option.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.role-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.role-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.role-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.role-icon i {
+    font-size: 1.8em;
+    color: white;
+}
+
+.role-text {
+    flex: 1;
+}
+
+.role-title {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.role-description {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    font-size: 1.1em;
+    padding: 18px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.continue-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(40, 167, 69, 0.3);
+}
+
+.continue-btn i {
+    font-size: 1.1em;
+}
+
+.features-section {
+    margin-top: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #e1e5e9;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.features-section h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.features-section h3 i {
+    color: #ffc107;
+    margin-right: 10px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 1px solid #e8f0ff;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 220px;
+}
+
+.feature-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.feature-item i {
+    font-size: 2.5em;
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.feature-item h4 {
+    color: #333;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Enhanced status display */
+.status {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.1em;
+}
+
+.status i {
+    font-size: 1.2em;
+}
+
+/* Subject Page Specific Styles */
+.credential-reception {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+}
+
+.info-banner {
+    background: linear-gradient(135deg, #e7f3ff 0%, #d1ecf1 100%);
+    border: 1px solid #bee5eb;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-banner i {
+    color: #0c5460;
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+
+.info-banner p {
+    color: #0c5460;
+    margin: 0;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.credential-reception .form-group {
+    margin-bottom: 25px;
+}
+
+.credential-reception label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.credential-reception label i {
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.credential-reception input {
+    padding: 15px 18px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.credential-reception input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.receive-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    font-size: 1.1em;
+    padding: 18px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.receive-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(40, 167, 69, 0.3);
+}
+
+.receive-btn i {
+    font-size: 1.1em;
+}
+
+/* Enhanced Results Section */
+.results h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #28a745;
+    font-size: 1.5em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.results h3 i {
+    color: #28a745;
+}
+
+.result-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.result-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 16px 24px;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+.result-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.3);
+}
+
+.result-link i {
+    font-size: 1.1em;
+}
+
+/* Enhanced NFT Info Section */
+.nft-info {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.nft-header h4 {
+    color: #667eea;
+    font-size: 1.3em;
+    margin-bottom: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    justify-content: center;
+}
+
+.nft-header h4 i {
+    color: #667eea;
+}
+
+.nft-header .important-note {
+    color: #666;
+    font-style: italic;
+    font-size: 0.95em;
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.id-copy-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.nft-id-textarea {
+    flex: 1;
+    min-height: 80px;
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    resize: vertical;
+    background: white;
+    color: #333;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.nft-id-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.copy-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.copy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
+.copy-button i {
+    font-size: 1.1em;
+}
+
+/* Enhanced Credential Image Section */
+.credential-image-container {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #e8f0ff;
+    text-align: center;
+}
+
+.credential-image-container h4 {
+    color: #667eea;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.credential-image-container h4 i {
+    color: #667eea;
+}
+
+.image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.credential-image {
+    max-width: 100%;
+    max-height: 350px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 3px solid #e8f0ff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.credential-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Navigation Button */
+.nav-button {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    margin-top: 30px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1em;
+}
+
+.nav-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(108, 117, 125, 0.3);
+}
+
+.nav-button i {
+    font-size: 1.1em;
+}
+
+/* Responsive improvements for Subject page */
+@media (max-width: 768px) {
+    .credential-reception input {
+        padding: 14px 16px;
+    }
+    
+    .receive-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+    
+    .nft-info {
+        padding: 20px;
+    }
+    
+    .id-copy-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .copy-button {
+        width: 100%;
+        height: 48px;
+    }
+    
+    .result-link {
+        padding: 14px 20px;
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .credential-reception input {
+        padding: 12px 14px;
+    }
+    
+    .nft-info {
+        padding: 15px;
+    }
+    
+    .credential-image {
+        max-height: 250px;
+    }
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+        margin: 15px;
+    }
+    
+    .header-section h1 {
+        font-size: 2em;
+    }
+    
+    .logo-icon {
+        font-size: 3em;
+    }
+    
+    .role-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .role-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .role-icon i {
+        font-size: 1.5em;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .continue-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .header-section h1 {
+        font-size: 1.8em;
+    }
+    
+    .subtitle {
+        font-size: 1em;
+    }
+    
+    .role-option {
+        padding: 15px;
+    }
+    
+    .features-section {
+        padding: 20px;
+    }
+}
+
+/* Issuer Page Specific Styles */
+.credential-issuance {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+}
+
+.credential-issuance .section-description {
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+}
+
+.form-row .form-group:first-child {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+}
+
+.form-row .form-group:last-child {
+    border-color: #764ba2;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+}
+
+.form-row .form-group:first-child::before {
+    content: "Issuer Account";
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    background: #667eea;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.form-row .form-group:last-child::before {
+    content: "Subject Account";
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    background: #764ba2;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.credential-issuance .form-group {
+    margin-bottom: 25px;
+}
+
+.credential-issuance label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.credential-issuance label i {
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.credential-issuance input,
+.credential-issuance textarea {
+    padding: 15px 18px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+    width: 100%;
+}
+
+.credential-issuance input:focus,
+.credential-issuance textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.credential-issuance textarea {
+    min-height: 120px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.issue-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-size: 1.1em;
+    padding: 18px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.issue-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+}
+
+.issue-btn i {
+    font-size: 1.1em;
+}
+
+/* Enhanced File Upload Styling */
+.file-upload-container {
+    width: 100%;
+}
+
+.drag-drop-area {
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 35px 25px;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    border-color: #667eea;
+}
+
+.drag-drop-area:hover {
+    border-color: #764ba2;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.drag-drop-area.dragover {
+    border-color: #764ba2;
+    background: linear-gradient(135deg, #e6f3ff 0%, #d1ecf1 100%);
+    transform: scale(1.02);
+}
+
+.drag-drop-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.drag-drop-icon {
+    font-size: 3em;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.drag-drop-icon i {
+    font-size: 1em;
+}
+
+.drag-drop-text {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+.drag-drop-subtext {
+    font-size: 1em;
+    color: #666;
+    margin: 0;
+}
+
+.browse-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 5px;
+}
+
+.browse-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Enhanced Results Section */
+.results h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #28a745;
+    font-size: 1.5em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.results h3 i {
+    color: #28a745;
+}
+
+.result-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.result-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 16px 24px;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+.result-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.3);
+}
+
+.result-link i {
+    font-size: 1.1em;
+}
+
+/* Enhanced Sell Offer Info Section */
+.sell-offer-info {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    border: 2px solid #e8f0ff;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.sell-offer-header h4 {
+    color: #667eea;
+    font-size: 1.3em;
+    margin-bottom: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    justify-content: center;
+}
+
+.sell-offer-header h4 i {
+    color: #667eea;
+}
+
+.sell-offer-header .important-note {
+    color: #666;
+    font-style: italic;
+    font-size: 0.95em;
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.sell-offer-row {
+    margin-top: 20px;
+}
+
+.id-copy-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.sell-offer-id-textarea {
+    flex: 1;
+    min-height: 80px;
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    resize: vertical;
+    background: white;
+    color: #333;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.sell-offer-id-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.copy-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.copy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
+.copy-button i {
+    font-size: 1.1em;
+}
+
+/* Enhanced Navigation Button */
+.nav-button {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    margin-top: 30px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1em;
+}
+
+.nav-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(108, 117, 125, 0.3);
+}
+
+.nav-button i {
+    font-size: 1.1em;
+}
+
+/* Responsive improvements for Issuer page */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .credential-issuance input,
+    .credential-issuance textarea {
+        padding: 14px 16px;
+    }
+    
+    .issue-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+    
+    .drag-drop-area {
+        padding: 25px 20px;
+    }
+    
+    .drag-drop-icon {
+        font-size: 2.5em;
+    }
+    
+    .drag-drop-text {
+        font-size: 1.1em;
+    }
+    
+    .sell-offer-info {
+        padding: 20px;
+    }
+    
+    .id-copy-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .copy-button {
+        width: 100%;
+        height: 48px;
+    }
+    
+    .result-link {
+        padding: 14px 20px;
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .credential-issuance input,
+    .credential-issuance textarea {
+        padding: 12px 14px;
+    }
+    
+    .drag-drop-area {
+        padding: 20px 15px;
+    }
+    
+    .drag-drop-icon {
+        font-size: 2em;
+    }
+    
+    .drag-drop-text {
+        font-size: 1em;
+    }
+    
+    .sell-offer-info {
+        padding: 15px;
+    }
+}
