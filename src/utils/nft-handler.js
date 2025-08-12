@@ -101,22 +101,17 @@ async function acceptSellOffer(subjectSeed, nftOfferId) {
 
     // Submit transaction
     const tx = await client.submitAndWait(transactionParams, { wallet });
-    const affectedNodes = tx.result.meta.AffectedNodes;
+    console.log('\n=== Accepted sell offer tx:', JSON.stringify(tx, null, 2));
 
-    // Loop through affected nodes. There are multiple DeletedNodes, but one of them has FinalFields.Destination which is equal to subjectAddress
-    const deletedNodes = affectedNodes.filter(node => node.DeletedNode);
-    const finalFields = deletedNodes.map(node => node.DeletedNode.FinalFields).filter(Boolean);
-    
-    // Keep the full nodes that have destinations, don't map to just the destination value
-    const nodesWithDestination = finalFields.filter(node => node.Destination);
-    const myNode = nodesWithDestination.find(node => node.Destination === wallet.address);
-    const nftId = myNode.NFTokenID;
+    const nft = await getNFTbySellOfferTxAndAddress(tx, wallet.address);
+    console.log('\n=== Accepted sell offer nft:', JSON.stringify(nft, null, 2));
 
-    const nft = await getNFTbyId(nftId);
+    const nftId = nft.nft_id;
     const nftUri = xrpl.convertHexToString(nft.uri);
 
     console.log('\n=== Accepted sell offer nftId:', nftId);
     console.log('\n=== Accepted sell offer nftUri:', nftUri);
+
     return { nftId: nftId, uri: nftUri };
 
   } catch (error) {
@@ -171,6 +166,23 @@ async function getNFTbyId(nftId) {
       await client.disconnect();
     }
   }
+}
+
+async function getNFTbySellOfferTxAndAddress(sellOfferTx, address) {
+  const affectedNodes = sellOfferTx.result.meta.AffectedNodes;
+
+  // Loop through affected nodes. There are multiple DeletedNodes, but one of them has FinalFields.Destination which is equal to subjectAddress
+  const deletedNodes = affectedNodes.filter(node => node.DeletedNode);
+  const finalFields = deletedNodes.map(node => node.DeletedNode.FinalFields).filter(Boolean);
+
+  // Keep the full nodes that have destinations, don't map to just the destination value
+  const nodesWithDestination = finalFields.filter(node => node.Destination);
+  const myNode = nodesWithDestination.find(node => node.Destination === address);
+  const nftId = myNode.NFTokenID;
+
+  const nft = await getNFTbyId(nftId);
+
+  return nft;
 }
 
 module.exports = {
