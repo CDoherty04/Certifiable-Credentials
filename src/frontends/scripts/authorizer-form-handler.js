@@ -8,8 +8,8 @@ function addTrustedIssuer() {
     // Validate issuer address Input
     if (!validateIssuerAddress()) {
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status error pulse';
-        trustedIssuersStatus.textContent = 'Issuer address is not valid';
+        trustedIssuersStatus.className = 'status error';
+        trustedIssuersStatus.textContent = 'Invalid issuer address format';
         return;
     }
 
@@ -17,18 +17,19 @@ function addTrustedIssuer() {
     if (!trustedAccounts.includes(issuerAddress)) {
         trustedAccounts.push(issuerAddress);
         const newIssuerItem = document.createElement('div');
+        newIssuerItem.className = 'issuer-item';
         newIssuerItem.textContent = issuerAddress;
         authorizedIssuersElement.appendChild(newIssuerItem);
 
-        // Update status display with pulse animation
+        // Update status display with success message
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status success pulse';
+        trustedIssuersStatus.className = 'status success';
         trustedIssuersStatus.textContent = 'Issuer added successfully';
 
     } else {
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status error pulse';
-        trustedIssuersStatus.textContent = 'Issuer already exists';
+        trustedIssuersStatus.className = 'status error';
+        trustedIssuersStatus.textContent = 'Issuer already exists in trusted list';
     }
 }
 
@@ -40,8 +41,8 @@ function removeTrustedIssuer() {
     // Validate issuer address Input
     if (!validateIssuerAddress()) {
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status error pulse';
-        trustedIssuersStatus.textContent = 'Issuer address is not valid';
+        trustedIssuersStatus.className = 'status error';
+        trustedIssuersStatus.textContent = 'Invalid issuer address format';
         return;
     }
 
@@ -50,24 +51,35 @@ function removeTrustedIssuer() {
         // Remove issuer from trusted accounts
         trustedAccounts = trustedAccounts.filter(account => account !== issuerAddress);
 
-        // Remove issuer from list
+        // Find and remove issuer from list with visual effect
         const listElements = authorizedIssuersElement.querySelectorAll('div');
         for (let i = 0; i < listElements.length; i++) {
             if (listElements[i].textContent === issuerAddress) {
-                authorizedIssuersElement.removeChild(listElements[i]);
+                // Add removal animation
+                listElements[i].style.transition = 'all 0.3s ease';
+                listElements[i].style.transform = 'translateX(-100%)';
+                listElements[i].style.opacity = '0';
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (listElements[i].parentNode) {
+                        authorizedIssuersElement.removeChild(listElements[i]);
+                    }
+                }, 300);
+
                 break;
             }
         }
 
-        // Update status display with pulse animation
+        // Update status display with success message
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status success pulse';
+        trustedIssuersStatus.className = 'status success';
         trustedIssuersStatus.textContent = 'Issuer removed successfully';
 
     } else {
         trustedIssuersStatus.style.display = 'block';
-        trustedIssuersStatus.className = 'status error pulse';
-        trustedIssuersStatus.textContent = 'Issuer not found';
+        trustedIssuersStatus.className = 'status error';
+        trustedIssuersStatus.textContent = 'Issuer not found in trusted list';
     }
 }
 
@@ -78,8 +90,8 @@ async function verifyCredential() {
     // Validate nftId Input
     if (!validateNftId()) {
         verifyCredentialStatus.style.display = 'block';
-        verifyCredentialStatus.className = 'status error pulse';
-        verifyCredentialStatus.textContent = 'NFT ID is not valid or trusted issuers list is empty';
+        verifyCredentialStatus.className = 'status error';
+        verifyCredentialStatus.textContent = 'Invalid NFT ID or no trusted issuers configured';
         return;
     }
 
@@ -103,15 +115,15 @@ async function verifyCredential() {
             // Display verification results
             displayVerificationResults(result);
 
-            // Update status display
+            // Update status display with persistent message
             if (isTrusted) {
                 verifyCredentialStatus.style.display = 'block';
-                verifyCredentialStatus.className = 'status success pulse';
-                verifyCredentialStatus.textContent = 'Credential is trusted!';
+                verifyCredentialStatus.className = 'status success';
+                verifyCredentialStatus.textContent = 'Credential verified and trusted';
             } else {
                 verifyCredentialStatus.style.display = 'block';
-                verifyCredentialStatus.className = 'status error pulse';
-                verifyCredentialStatus.textContent = 'Credential is not trusted';
+                verifyCredentialStatus.className = 'status error';
+                verifyCredentialStatus.textContent = 'Credential verification failed - issuer not trusted';
             }
         } else {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -128,7 +140,7 @@ async function verifyCredential() {
     // Update status display for errors
     if (errorEncountered) {
         verifyCredentialStatus.style.display = 'block';
-        verifyCredentialStatus.className = 'status error pulse';
+        verifyCredentialStatus.className = 'status error';
         verifyCredentialStatus.textContent = 'Error occurred during verification';
     }
 }
