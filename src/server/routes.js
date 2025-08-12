@@ -1,28 +1,93 @@
 const path = require('path');
-const { StoreCredentialData } = require('../utils/pinata');
+const { StoreCredentialData, StoreImage } = require('../utils/pinata');
 const { mintNFT, createSellOffer, acceptSellOffer, getNFTbyId } = require('../utils/nft-handler');
 const xrpl = require('xrpl');
 
 async function issueCredential(req, res) {
-    const { issuerSeed, subjectAddress, subjectEmail, credentialData } = req.body;
+    try {
+        console.log('issueCredential called with:', req.body);
+        console.log('Files:', req.files);
 
-    // Upload Credential Data to Pinata/IPFS
-    const CID = await StoreCredentialData(credentialData);
-    const URI = `https://ipfs.io/ipfs/${CID}`;
+        // Get the image file from req.files
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({
+                success: false,
+                message: 'No image file provided'
+            });
+        }
 
-    // Create Credential Object
-    const nft = await mintNFT(issuerSeed, URI);
-    const sellOfferId = await createSellOffer(issuerSeed, nft.nft_id, subjectAddress);
+        const image = req.files.image;
+        console.log('Image received:', image.name, image.size, image.mimetype);
 
-    res.json({
-        success: true,
-        message: 'Credential issued successfully! View credential data at the URI and the ' +
-            'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
-            'subject for acceptance.',
-        uri: URI,
-        nftId: nft.nft_id,
-        sellOfferId: sellOfferId
-    });
+        // Get the form data from req.body
+        const formDataString = req.body.data;
+        if (!formDataString) {
+            return res.status(400).json({
+                success: false,
+                message: 'No form data provided'
+            });
+        }
+
+        const formData = JSON.parse(formDataString);
+        console.log('Form data:', formData);
+
+        // Store the image to get CID
+        const imageCID = await StoreImage(image.data);
+        console.log('Image CID:', imageCID);
+
+        if (!imageCID) {
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to store image to IPFS'
+            });
+        }
+
+        const imageURI = `https://ipfs.io/ipfs/${imageCID}`;
+        console.log('Image URI:', imageURI);
+
+        // Add the image CID to the form data before uploading to Pinata
+        const enhancedFormData = {
+            ...formData.credentialData,
+            imageURI: imageURI
+        };
+        console.log('Enhanced form data with image CID:', enhancedFormData);
+
+        // Upload Enhanced Credential Data (including image URI) to Pinata/IPFS
+        const credentialDataCID = await StoreCredentialData(enhancedFormData);
+        console.log('Credential data CID:', credentialDataCID);
+
+        if (!credentialDataCID) {
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to store credential data to IPFS'
+            });
+        }
+
+        const credentialDataURI = `https://ipfs.io/ipfs/${credentialDataCID}`;
+        console.log('Credential data URI:', credentialDataURI);
+
+        // Create Credential Object
+        const nft = await mintNFT(formData.issuerSeed, credentialDataURI);
+        const sellOfferId = await createSellOffer(formData.issuerSeed, nft.nft_id, formData.subjectAddress);
+
+        res.json({
+            success: true,
+            message: 'Credential issued successfully! View credential data at the URI and the ' +
+                'NFT at https://devnet.xrpl.org (Search the nftId). Send the Sell Offer ID to the ' +
+                'subject for acceptance.',
+            uri: credentialDataURI,
+            nftId: nft.nft_id,
+            sellOfferId: sellOfferId
+        });
+
+    } catch (error) {
+        console.error('Error in issueCredential:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error issuing credential',
+            error: error.message
+        });
+    }
 }
 
 async function receiveCredential(req, res) {
@@ -63,6 +128,50 @@ async function verifyCredential(req, res) {
             nft: nft,
             URI: xrpl.convertHexToString(nft.uri),
             isTrusted: isTrusted
+        });
+    }
+}
+
+async function storeImage(req, res) {
+    try {
+        console.log('Storing image...');
+        
+        // Check if image file exists in the request
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({
+                success: false,
+                message: 'No image file provided'
+            });
+        }
+
+        const imageFile = req.files.image;
+        console.log('Image file received:', imageFile.name, imageFile.size, imageFile.mimetype);
+
+        // Store image to Pinata/IPFS
+        const imageCID = await StoreImage(imageFile.data);
+        console.log('Image stored with CID:', imageCID);
+
+        if (!imageCID) {
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to store image to IPFS'
+            });
+        }
+
+        // Return the CID
+        res.json({
+            success: true,
+            message: 'Image stored successfully',
+            cid: imageCID,
+            ipfsUrl: `https://ipfs.io/ipfs/${imageCID}`
+        });
+
+    } catch (error) {
+        console.error('Error storing image:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error storing image',
+            error: error.message
         });
     }
 }
@@ -112,6 +221,7 @@ module.exports = {
     issueCredential,
     receiveCredential,
     verifyCredential,
+    storeImage,
     getGeneralFrontend,
     getIssuerFrontend,
     getSubjectFrontend,

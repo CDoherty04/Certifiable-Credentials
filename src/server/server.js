@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 const routes = require('./routes');
 require('dotenv').config();
 
@@ -15,6 +16,15 @@ class CredentialServer {
 
     setupMiddleware() {
         this.app.use(cors());
+        
+        // Configure fileUpload before express.json to handle multipart forms
+        this.app.use(fileUpload({
+            limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+            abortOnLimit: true,
+            responseOnLimit: "File size limit has been reached"
+        }));
+        
+        // Parse JSON for non-file endpoints
         this.app.use(express.json());
 
         // Serve static files from the frontends directory (for shared resources like styles.css)
@@ -22,7 +32,7 @@ class CredentialServer {
         const staticPath = path.join(__dirname, '../frontends');
         this.app.use('/styles', express.static(path.join(staticPath, 'styles')));
         this.app.use('/scripts', express.static(path.join(staticPath, 'scripts')));
-        
+
         // Add debugging for static file requests
         this.app.use('/styles', (req, res, next) => {
             console.log('Static file request:', req.path);
@@ -32,7 +42,7 @@ class CredentialServer {
             console.log('Script file request:', req.path);
             next();
         });
-        
+
         // Add a catch-all for debugging
         this.app.use((req, res, next) => {
             console.log(`${req.method} ${req.path}`);
@@ -75,6 +85,11 @@ class CredentialServer {
 
         this.app.post('/api/verifyCredential', async (req, res) => {
             await routes.verifyCredential(req, res);
+        });
+
+        // Image storage endpoint
+        this.app.post('/api/storeImage', async (req, res) => {
+            await routes.storeImage(req, res);
         });
     }
 

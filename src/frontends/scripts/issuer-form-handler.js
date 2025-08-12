@@ -1,17 +1,17 @@
 async function handleFormSubmission(e) {
     e.preventDefault();
 
-    const { formData, statusDiv, submitButton } = getElements();
+    const { fullFormData, statusDiv, submitButton } = getElements();
 
     // Show loading state
     statusDiv.style.display = 'block';
     statusDiv.className = 'status loading';
-    statusDiv.textContent = 'Issuing credential...';
+    statusDiv.textContent = 'Processing image and issuing credential...';
     submitButton.disabled = true;
 
     // Call issueCredential
     try {
-        const response = await issueCredential(formData);
+        const response = await issueCredential(fullFormData);
         if (response.ok) {
             const result = await response.json();
 
@@ -44,14 +44,74 @@ async function handleFormSubmission(e) {
 let selectedImage = null;
 
 // Initialize image upload functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeImageUpload();
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM loaded - initializing issuer form...');
+    
+    // Check if elements exist immediately
+    const immediateCheck = {
+        dragDropArea: !!document.getElementById('dragDropArea'),
+        imageUpload: !!document.getElementById('imageUpload'),
+        credentialForm: !!document.getElementById('credentialForm')
+    };
+    
+    console.log('Immediate element check:', immediateCheck);
+    
+    // Add a small delay to ensure all elements are fully accessible
+    setTimeout(() => {
+        console.log('Starting initialization after delay...');
+        
+        // Check elements again after delay
+        const delayedCheck = {
+            dragDropArea: !!document.getElementById('dragDropArea'),
+            imageUpload: !!document.getElementById('imageUpload'),
+            credentialForm: !!document.getElementById('credentialForm')
+        };
+        
+        console.log('Delayed element check:', delayedCheck);
+        
+        initializeImageUpload();
+        initializeFormSubmission();
+    }, 100);
 });
 
+function initializeFormSubmission() {
+    const form = document.getElementById('credentialForm');
+    if (form) {
+        console.log('Form found, attaching submit handler...');
+        form.addEventListener('submit', handleFormSubmission);
+    } else {
+        console.error('Form not found!');
+    }
+}
+
 function initializeImageUpload() {
+    console.log('initializeImageUpload called...');
+    
     const dragDropArea = document.getElementById('dragDropArea');
     const fileInput = document.getElementById('imageUpload');
+    
+    if (!dragDropArea) {
+        console.error('dragDropArea not found!');
+        return;
+    }
+    
+    if (!fileInput) {
+        console.error('fileInput (imageUpload) not found!');
+        return;
+    }
+    
     const browseButton = dragDropArea.querySelector('.browse-button');
+    if (!browseButton) {
+        console.error('browseButton not found!');
+        return;
+    }
+
+    console.log('All image upload elements found, initializing...');
+    console.log('Elements:', {
+        dragDropArea: dragDropArea.id,
+        fileInput: fileInput.id,
+        browseButton: browseButton.textContent
+    });
 
     // Drag and drop event listeners
     dragDropArea.addEventListener('dragover', handleDragOver);
@@ -67,6 +127,8 @@ function initializeImageUpload() {
         e.stopPropagation();
         fileInput.click();
     });
+    
+    console.log('Image upload initialization complete');
 }
 
 function handleDragOver(e) {
@@ -86,10 +148,10 @@ function handleDragLeave(e) {
 function handleDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const dragDropArea = document.getElementById('dragDropArea');
     dragDropArea.classList.remove('dragover');
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
         handleFile(files[0]);
@@ -118,45 +180,44 @@ function handleFile(file) {
 
     // Store the selected image
     selectedImage = file;
-    
+
     // Create image preview (this will replace the drag-drop area)
     createImagePreview(file);
 }
 
-function displayFileInfo(file) {
-    // This function is no longer needed as we're replacing the entire area
-}
-
 function createImagePreview(file) {
     const reader = new FileReader();
-    
-    reader.onload = function(e) {
+
+    reader.onload = function (e) {
         // Remove existing preview if any
         const existingPreview = document.querySelector('.image-preview-container');
         if (existingPreview) {
             existingPreview.remove();
         }
-        
-        // Get the drag-drop area to replace it
+
+        // Get the drag-drop area and hide it instead of replacing it
         const dragDropArea = document.getElementById('dragDropArea');
-        
+        if (dragDropArea) {
+            dragDropArea.style.display = 'none';
+        }
+
         // Create preview container
         const previewContainer = document.createElement('div');
         previewContainer.className = 'image-preview-container';
-        
+
         // Create preview image
         const previewImg = document.createElement('img');
         previewImg.src = e.target.result;
         previewImg.className = 'image-preview';
         previewImg.alt = 'Image preview';
-        
+
         // Create remove button overlay
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.className = 'remove-image-btn';
         removeBtn.innerHTML = '✕';
         removeBtn.onclick = removeSelectedFile;
-        
+
         // Create preview info
         const previewInfo = document.createElement('div');
         previewInfo.className = 'image-preview-info';
@@ -164,16 +225,20 @@ function createImagePreview(file) {
             <span class="preview-filename">${file.name}</span>
             <span class="preview-filesize">${formatFileSize(file.size)}</span>
         `;
-        
+
         // Add to container
         previewContainer.appendChild(previewImg);
         previewContainer.appendChild(removeBtn);
         previewContainer.appendChild(previewInfo);
+
+        // Insert the preview after the drag-drop area instead of replacing it
+        if (dragDropArea && dragDropArea.parentNode) {
+            dragDropArea.parentNode.insertBefore(previewContainer, dragDropArea.nextSibling);
+        }
         
-        // Replace the drag-drop area with the preview
-        dragDropArea.parentNode.replaceChild(previewContainer, dragDropArea);
+        console.log('Image preview created, drag-drop area hidden but preserved');
     };
-    
+
     reader.readAsDataURL(file);
 }
 
@@ -187,36 +252,28 @@ function formatFileSize(bytes) {
 
 function removeSelectedFile() {
     selectedImage = null;
-    
-    // Remove image preview and restore drag-drop area
+
+    // Remove image preview and show drag-drop area again
     const existingPreview = document.querySelector('.image-preview-container');
     if (existingPreview) {
-        // Recreate the drag-drop area
-        const fileUploadContainer = document.querySelector('.file-upload-container');
-        const newDragDropArea = document.createElement('div');
-        newDragDropArea.className = 'drag-drop-area';
-        newDragDropArea.id = 'dragDropArea';
-        newDragDropArea.innerHTML = `
-            <div class="drag-drop-content">
-                <div class="drag-drop-icon">📷</div>
-                <p class="drag-drop-text">Drag & drop an image here</p>
-                <p class="drag-drop-subtext">or</p>
-                <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file-input">
-                <label class="browse-button">Browse Files</label>
-            </div>
-        `;
-        
-        // Replace preview with new drag-drop area
-        existingPreview.parentNode.replaceChild(newDragDropArea, existingPreview);
-        
-        // Reinitialize event listeners for the new drag-drop area
-        initializeImageUpload();
+        existingPreview.remove();
+        console.log('Image preview removed');
     }
-    
+
+    // Show the drag-drop area again
+    const dragDropArea = document.getElementById('dragDropArea');
+    if (dragDropArea) {
+        dragDropArea.style.display = 'block';
+        console.log('Drag-drop area shown again');
+    }
+
     // Reset file input
     const fileInput = document.getElementById('imageUpload');
     if (fileInput) {
         fileInput.value = '';
+        console.log('File input reset successfully');
+    } else {
+        console.error('File input not found - this should not happen now');
     }
 }
 
@@ -291,36 +348,104 @@ function copySellOfferId() {
     }
 }
 
-async function issueCredential(formData) {
-    // Make API request
-    const response = await fetch('/api/issueCredential', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    });
+async function issueCredential(fullFormData) {
+    console.log('fullFormData', fullFormData)
+    
+    try {
+        // Call the issueCredential API directly - it will handle image upload internally
+        console.log('Calling issueCredential API...');
+        const response = await fetch('/api/issueCredential', {
+            method: 'POST',
+            body: fullFormData
+        });
 
-    return response;
+        return response;
+
+    } catch (error) {
+        console.error('Error in issueCredential:', error);
+        throw error;
+    }
 }
+
 
 function getElements() {
     try {
-        const credentialDataValue = document.getElementById('credentialData').value;
-
-        const formData = {
-            issuerSeed: document.getElementById('issuerSeed').value,
-            subjectAddress: document.getElementById('subjectAddress').value,
-            subjectEmail: document.getElementById('subjectEmail').value,
-            credentialData: JSON.parse(credentialDataValue),
-            imageFile: selectedImage // Include the selected image file
-        };
-
-        // Get other elements
+        console.log('getElements called - checking for elements...');
+        
+        // Check if all required elements exist
+        const credentialDataElement = document.getElementById('credentialData');
+        const issuerSeedElement = document.getElementById('issuerSeed');
+        const subjectAddressElement = document.getElementById('subjectAddress');
+        const subjectEmailElement = document.getElementById('subjectEmail');
+        const imageUploadElement = document.getElementById('imageUpload');
         const statusDiv = document.getElementById('status');
         const submitButton = document.querySelector('button[type="submit"]');
 
-        return { formData, statusDiv, submitButton };
+        console.log('Elements found:', {
+            credentialData: !!credentialDataElement,
+            issuerSeed: !!issuerSeedElement,
+            subjectAddress: !!subjectAddressElement,
+            subjectEmail: !!subjectEmailElement,
+            imageUpload: !!imageUploadElement,
+            statusDiv: !!statusDiv,
+            submitButton: !!submitButton
+        });
+
+        // Additional debugging for imageUpload element
+        if (imageUploadElement) {
+            console.log('ImageUpload element details:', {
+                id: imageUploadElement.id,
+                name: imageUploadElement.name,
+                type: imageUploadElement.type,
+                files: imageUploadElement.files,
+                filesLength: imageUploadElement.files ? imageUploadElement.files.length : 'no files property'
+            });
+        } else {
+            console.error('ImageUpload element not found!');
+            console.log('Available elements with similar names:');
+            const allInputs = document.querySelectorAll('input');
+            allInputs.forEach(input => {
+                if (input.type === 'file' || input.id.includes('image') || input.name.includes('image')) {
+                    console.log('Found similar input:', {
+                        id: input.id,
+                        name: input.name,
+                        type: input.type
+                    });
+                }
+            });
+        }
+
+        // Validate that all elements exist
+        if (!credentialDataElement) throw new Error('Credential data element not found');
+        if (!issuerSeedElement) throw new Error('Issuer seed element not found');
+        if (!subjectAddressElement) throw new Error('Subject address element not found');
+        if (!subjectEmailElement) throw new Error('Subject email element not found');
+        if (!imageUploadElement) throw new Error('Image upload element not found');
+        if (!statusDiv) throw new Error('Status div not found');
+        if (!submitButton) throw new Error('Submit button not found');
+
+        const credentialDataValue = credentialDataElement.value;
+
+        const formData = {
+            issuerSeed: issuerSeedElement.value,
+            subjectAddress: subjectAddressElement.value,
+            subjectEmail: subjectEmailElement.value,
+            credentialData: JSON.parse(credentialDataValue),
+        };
+
+        const image = imageUploadElement.files[0];
+        console.log('image', image);
+
+        if (!image) {
+            throw new Error('No image file selected');
+        }
+
+        // Get image
+        const fullFormData = new FormData();
+        fullFormData.append('image', image);
+        fullFormData.append('data', JSON.stringify(formData));
+
+        return { fullFormData, statusDiv, submitButton };
     } catch (error) {
         console.error('Error in getElements:', error);
         throw error;

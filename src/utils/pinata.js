@@ -16,9 +16,9 @@ async function StoreCredentialData(testJson) {
     }
 }
 
-async function StoreImage(filepath) {
+async function StoreImage(imageBlob) {
     try {
-        const file = new File([fs.readFileSync(filepath)], "Testing.txt", { type: "image/jpeg/png/jpg" });
+        const file = new File([imageBlob], "Testing.txt", { type: "image/*" });
         const upload = await pinata.upload.public.file(file);
         return upload.cid;
     } catch (error) {
