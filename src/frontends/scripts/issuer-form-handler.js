@@ -154,6 +154,15 @@ function handleDrop(e) {
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
+        // Also set the file in the imageUpload element so it can be accessed during form submission
+        const imageUploadElement = document.getElementById('imageUpload');
+        if (imageUploadElement) {
+            // Create a new FileList-like object and set it
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(files[0]);
+            imageUploadElement.files = dataTransfer.files;
+            console.log('File set in imageUpload element via drag and drop');
+        }
         handleFile(files[0]);
     }
 }
@@ -161,6 +170,7 @@ function handleDrop(e) {
 function handleFileSelect(e) {
     const file = e.target.files[0];
     if (file) {
+        console.log('File selected via file input:', file.name);
         handleFile(file);
     }
 }
@@ -435,6 +445,8 @@ function getElements() {
 
         const image = imageUploadElement.files[0];
         console.log('image', image);
+        console.log('imageUploadElement.files:', imageUploadElement.files);
+        console.log('imageUploadElement.files.length:', imageUploadElement.files.length);
 
         if (!image) {
             throw new Error('No image file selected');
