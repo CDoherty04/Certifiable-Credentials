@@ -28,14 +28,14 @@ async function issueCredential(req, res) {
 async function receiveCredential(req, res) {
     const { subjectSeed, sellOfferId } = req.body;
 
-    const nft = await acceptSellOffer(subjectSeed, sellOfferId);
+    const { nftId, uri } = await acceptSellOffer(subjectSeed, sellOfferId);
 
     res.json({
         success: true,
         message: 'Credential received successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId).',
-        nftId: nft.NFTokenID,
-        uri: xrpl.convertHexToString(nft.URI)
+        nftId: nftId,
+        uri: uri
     });
 }
 

@@ -63,19 +63,16 @@ async function createSellOffer(issuerSeed, nftId, subjectAddress) {
     const tx = await client.submitAndWait(transactionParams, { wallet });
 
     // Get Sell Offer
-    const sellOffers = await client.request({
+    const result = await client.request({
       method: "nft_sell_offers",
       nft_id: nftId
     });
 
-    // Report result
-    console.log('\n=== Transaction result:', tx.result.meta.TransactionResult);
-    console.log('\n=== Sell Offers:', JSON.stringify(sellOffers, null, 2));
+    // Match to NFT->offers.destination === subjectAddress
+    const sellOffer = result.result.offers.find(offer => offer.destination === subjectAddress);
 
-    // Get last NFT in array
-    const sellOfferId = sellOffers.result.offers[sellOffers.result.offers.length - 1].nft_offer_index;
-    console.log('\n=== Sell Offer ID:', sellOfferId);
-    return sellOfferId;
+    console.log('\n=== Sell Offer ID:', sellOffer.nft_offer_index);
+    return sellOffer.nft_offer_index;
 
   } catch (error) {
     console.error("Error creating sell offer:", error);
@@ -104,25 +101,23 @@ async function acceptSellOffer(subjectSeed, nftOfferId) {
 
     // Submit transaction
     const tx = await client.submitAndWait(transactionParams, { wallet });
+    const affectedNodes = tx.result.meta.AffectedNodes;
 
-    // Report result
-    console.log('\n=== Transaction result:', tx.result.meta.TransactionResult);
+    // Loop through affected nodes. There are multiple DeletedNodes, but one of them has FinalFields.Destination which is equal to subjectAddress
+    const deletedNodes = affectedNodes.filter(node => node.DeletedNode);
+    const finalFields = deletedNodes.map(node => node.DeletedNode.FinalFields).filter(Boolean);
+    
+    // Keep the full nodes that have destinations, don't map to just the destination value
+    const nodesWithDestination = finalFields.filter(node => node.Destination);
+    const myNode = nodesWithDestination.find(node => node.Destination === wallet.address);
+    const nftId = myNode.NFTokenID;
 
-    // Get NFT
-    const nfts = await client.request({
-      method: "account_nfts",
-      account: wallet.address,
-    });
+    const nft = await getNFTbyId(nftId);
+    const nftUri = xrpl.convertHexToString(nft.uri);
 
-    console.log('NFTs:', JSON.stringify(nfts, null, 2));
-
-    // Get last NFT in array
-    const nft = nfts.result.account_nfts[nfts.result.account_nfts.length - 1];
-
-    console.log('NFT:', JSON.stringify(nft, null, 2));
-
-    console.log('\n=== Final NFT:', JSON.stringify(nft, null, 2));
-    return nft;
+    console.log('\n=== Accepted sell offer nftId:', nftId);
+    console.log('\n=== Accepted sell offer nftUri:', nftUri);
+    return { nftId: nftId, uri: nftUri };
 
   } catch (error) {
     console.error("Error accepting sell offer:", error);
