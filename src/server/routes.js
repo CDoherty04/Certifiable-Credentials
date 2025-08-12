@@ -115,24 +115,32 @@ async function verifyCredential(req, res) {
 
     // Get the issuer address from the nftId
     const nft = await getNFTbyId(nftId);
+    const credentialURI = xrpl.convertHexToString(nft.uri);
 
     const isTrusted = authorizedIssuers.includes(nft.issuer);
+
+    // Fetch the credential data to get the imageURI
+    const response = await fetch(credentialURI);
+    const data = await response.json();
+    const imageURI = data.imageURI;
 
     if (isTrusted) {
         res.json({
             success: true,
             message: 'The Credential was fetched successfully and issued by an authorized source!',
             nft: nft,
-            URI: xrpl.convertHexToString(nft.uri),
-            isTrusted: isTrusted
+            URI: credentialURI,
+            isTrusted: isTrusted,
+            imageURI: imageURI
         });
     } else {
         res.json({
             success: false,
             message: 'The Credential was fetched successfully but was issued by an UNAUTHORIZED source.',
             nft: nft,
-            URI: xrpl.convertHexToString(nft.uri),
-            isTrusted: isTrusted
+            URI: credentialURI,
+            isTrusted: isTrusted,
+            imageURI: imageURI
         });
     }
 }

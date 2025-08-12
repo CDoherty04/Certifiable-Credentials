@@ -60,8 +60,20 @@ async function verifyCredential() {
         if (response.ok) {
             const result = await response.json();
             isTrusted = result.isTrusted;
-            verifyCredentialStatus.className = 'status success';
-            verifyCredentialStatus.textContent = "Response: " + JSON.stringify(result, null, 2);
+            
+            // Display verification results
+            displayVerificationResults(result);
+            
+            // Update status display
+            if (isTrusted) {
+                verifyCredentialStatus.style.display = 'block';
+                verifyCredentialStatus.className = 'status success pulse';
+                verifyCredentialStatus.textContent = 'Credential is trusted!';
+            } else {
+                verifyCredentialStatus.style.display = 'block';
+                verifyCredentialStatus.className = 'status error pulse';
+                verifyCredentialStatus.textContent = 'Credential is not trusted';
+            }
         } else {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -74,16 +86,11 @@ async function verifyCredential() {
         verifyCredentialButton.disabled = false;
     }
 
-    // Update status display
-    if (isTrusted) {
-        verifyCredentialStatus.style.display = 'block';
-        verifyCredentialStatus.className = 'status success pulse';
-        verifyCredentialStatus.textContent = 'Credential is trusted!';
-
-    } else if (!errorEncountered) {
+    // Update status display for errors
+    if (errorEncountered) {
         verifyCredentialStatus.style.display = 'block';
         verifyCredentialStatus.className = 'status error pulse';
-        verifyCredentialStatus.textContent = 'Credential is not trusted';
+        verifyCredentialStatus.textContent = 'Error occurred during verification';
     }
 }
 
@@ -98,6 +105,25 @@ async function verifyCredentialAPI(formData) {
     });
 
     return response;
+}
+
+function displayVerificationResults(result) {
+    const credentialImageContainer = document.getElementById('credentialImageContainer');
+    const credentialImage = document.getElementById('credentialImage');
+
+    // Display the credential image if available
+    if (result.imageURI) {
+        credentialImage.src = result.imageURI;
+        credentialImage.onload = () => {
+            credentialImageContainer.style.display = 'block';
+        };
+        credentialImage.onerror = () => {
+            console.error('Failed to load credential image:', result.imageURI);
+            credentialImageContainer.style.display = 'none';
+        };
+    } else {
+        credentialImageContainer.style.display = 'none';
+    }
 }
 
 function getElements() {

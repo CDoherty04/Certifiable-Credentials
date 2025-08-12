@@ -12,23 +12,24 @@
 <body>
     <div class="container">
         <h1>Credential Authorizer</h1>
-        
+
         <!-- Trusted Issuers Management Section -->
         <div class="section">
             <h3>Trusted Issuers Management</h3>
-            
+
             <!-- Add New Issuer -->
             <div class="add-issuer-section">
                 <div class="form-group">
                     <label for="issuerAddress">Add New Trusted Issuer:</label>
                     <div class="input-with-button">
                         <!-- Regex to match 35 characters starting with 'r' -->
-                        <input type="text" id="issuerAddress" placeholder="Enter issuer wallet address" pattern="^r[a-zA-Z0-9]{34}$" required>
+                        <input type="text" id="issuerAddress" placeholder="Enter issuer wallet address"
+                            pattern="^r[a-zA-Z0-9]{34}$" required>
                         <button type="button" onclick="addTrustedIssuer()" class="add-button">Add</button>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Trusted Issuers List -->
             <div class="issuers-list-section">
                 <h4>Current Trusted Issuers:</h4>
@@ -48,12 +49,19 @@
                 <label for="nftId">NFT ID:</label>
                 <input type="text" id="nftId" placeholder="Enter NFT ID to verify" required>
             </div>
-            <button type="button" id="verifyCredentialButton" onclick="verifyCredential()" class="action-button">Verify Credential</button>
+            <button type="button" id="verifyCredentialButton" onclick="verifyCredential()" class="action-button">Verify
+                Credential</button>
             <!-- Verify Credential Status Display -->
             <div id="verifyCredentialStatus" class="status" style="display: none;"></div>
         </div>
 
-        
+        <!-- Credential Image Display -->
+        <div id="credentialImageContainer" class="credential-image-container" style="display: none;">
+            <div class="image-wrapper">
+                <img id="credentialImage" class="credential-image" alt="Credential Image" />
+            </div>
+        </div>
+
         <!-- Navigation -->
         <button onclick="window.location.href = '/'" class="nav-button">← Not an Authorizer?</button>
     </div>
