@@ -95,12 +95,17 @@ async function receiveCredential(req, res) {
 
     const { nftId, uri } = await acceptSellOffer(subjectSeed, sellOfferId);
 
+    const response = await fetch(uri);
+    const data = await response.json();
+    const imageURI = data.imageURI;
+
     res.json({
         success: true,
         message: 'Credential received successfully! View credential data at the URI and the ' +
             'NFT at https://devnet.xrpl.org (Search the nftId).',
         nftId: nftId,
-        uri: uri
+        uri: uri,
+        imageURI: imageURI
     });
 }
 
@@ -135,7 +140,7 @@ async function verifyCredential(req, res) {
 async function storeImage(req, res) {
     try {
         console.log('Storing image...');
-        
+
         // Check if image file exists in the request
         if (!req.files || !req.files.image) {
             return res.status(400).json({

@@ -579,6 +579,41 @@ button:active {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Credential Image Styles */
+.credential-image-container {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.credential-image-container h4 {
+    color: #17a2b8;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.credential-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid #e1e5e9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.credential-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
 /* File Upload Styles */
 .file-upload-container {
     width: 100%;

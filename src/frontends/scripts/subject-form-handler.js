@@ -45,6 +45,8 @@ function subjectDisplayResults(result) {
     const subjectCredentialDataLink = document.getElementById('subjectCredentialDataLink');
     const subjectNftExplorerLink = document.getElementById('subjectNftExplorerLink');
     const nftIdDisplay = document.getElementById('nftIdDisplay');
+    const credentialImageContainer = document.getElementById('credentialImageContainer');
+    const credentialImage = document.getElementById('credentialImage');
 
     // Set up the credential data link
     subjectCredentialDataLink.href = result.uri;
@@ -56,6 +58,20 @@ function subjectDisplayResults(result) {
 
     // Display the NFT ID in the textarea
     nftIdDisplay.value = result.nftId;
+
+    // Display the credential image if available
+    if (result.imageURI) {
+        credentialImage.src = result.imageURI;
+        credentialImage.onload = () => {
+            credentialImageContainer.style.display = 'block';
+        };
+        credentialImage.onerror = () => {
+            console.error('Failed to load credential image:', result.imageURI);
+            credentialImageContainer.style.display = 'none';
+        };
+    } else {
+        credentialImageContainer.style.display = 'none';
+    }
 
     // Show the results section
     resultsDiv.style.display = 'block';
