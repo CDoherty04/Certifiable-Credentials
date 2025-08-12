@@ -321,6 +321,31 @@ button:active {
     transform: translateY(0);
 }
 
+.remove-button {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.remove-button:hover {
+    background: linear-gradient(135deg, #c82333 0%, #c82333 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.remove-button:active {
+    transform: translateY(0);
+}
+
 /* Additional Page Styling */
 .info-text {
     background-color: #e7f3ff;

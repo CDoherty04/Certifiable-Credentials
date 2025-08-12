@@ -1,4 +1,4 @@
-const trustedAccounts = []
+let trustedAccounts = []
 
 function addTrustedIssuer() {
 
@@ -32,6 +32,45 @@ function addTrustedIssuer() {
     }
 }
 
+function removeTrustedIssuer() {
+
+    // Get elements
+    const { issuerAddress, authorizedIssuersElement, trustedIssuersStatus } = getElements();
+
+    // Validate issuer address Input
+    if (!validateIssuerAddress()) {
+        trustedIssuersStatus.style.display = 'block';
+        trustedIssuersStatus.className = 'status error pulse';
+        trustedIssuersStatus.textContent = 'Issuer address is not valid';
+        return;
+    }
+
+    // Remove issuer from trusted accounts
+    if (trustedAccounts.includes(issuerAddress)) {
+        // Remove issuer from trusted accounts
+        trustedAccounts = trustedAccounts.filter(account => account !== issuerAddress);
+
+        // Remove issuer from list
+        const listElements = authorizedIssuersElement.querySelectorAll('div');
+        for (let i = 0; i < listElements.length; i++) {
+            if (listElements[i].textContent === issuerAddress) {
+                authorizedIssuersElement.removeChild(listElements[i]);
+                break;
+            }
+        }
+
+        // Update status display with pulse animation
+        trustedIssuersStatus.style.display = 'block';
+        trustedIssuersStatus.className = 'status success pulse';
+        trustedIssuersStatus.textContent = 'Issuer removed successfully';
+
+    } else {
+        trustedIssuersStatus.style.display = 'block';
+        trustedIssuersStatus.className = 'status error pulse';
+        trustedIssuersStatus.textContent = 'Issuer not found';
+    }
+}
+
 async function verifyCredential() {
     // Get elements
     const { nftId, authorizedIssuers, verifyCredentialStatus, verifyCredentialButton } = getElements();
@@ -60,10 +99,10 @@ async function verifyCredential() {
         if (response.ok) {
             const result = await response.json();
             isTrusted = result.isTrusted;
-            
+
             // Display verification results
             displayVerificationResults(result);
-            
+
             // Update status display
             if (isTrusted) {
                 verifyCredentialStatus.style.display = 'block';
@@ -133,7 +172,7 @@ function getElements() {
     const trustedIssuersStatus = document.getElementById('trustedIssuersStatus');
     const verifyCredentialStatus = document.getElementById('verifyCredentialStatus');
     const verifyCredentialButton = document.getElementById('verifyCredentialButton');
-    
+
     // Get primitive list
     const authorizedIssuers = [];
     for (let i = 0; i < authorizedIssuersElement.children.length; i++) {
