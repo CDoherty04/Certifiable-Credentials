@@ -41,6 +41,21 @@
                         placeholder='{"key": "value", "example": "data"}' required></textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="imageUpload">Credential Image:</label>
+                    <div class="file-upload-container">
+                        <div class="drag-drop-area" id="dragDropArea">
+                            <div class="drag-drop-content">
+                                <div class="drag-drop-icon">📷</div>
+                                <p class="drag-drop-text">Drag & drop an image here</p>
+                                <p class="drag-drop-subtext">or</p>
+                                <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file-input">
+                                <label class="browse-button">Browse Files</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="action-button">Issue Credential</button>
             </form>
         </div>
