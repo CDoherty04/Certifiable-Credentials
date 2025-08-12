@@ -1,4 +1,5 @@
 const { PinataSDK } = require("pinata")
+const fs = require('fs');
 require("dotenv").config()
 
 const pinata = new PinataSDK({
@@ -15,6 +16,17 @@ async function StoreCredentialData(testJson) {
     }
 }
 
+async function StoreImage(filepath) {
+    try {
+        const file = new File([fs.readFileSync(filepath)], "Testing.txt", { type: "image/jpeg/png/jpg" });
+        const upload = await pinata.upload.public.file(file);
+        return upload.cid;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
-    StoreCredentialData
+    StoreCredentialData,
+    StoreImage
 }
